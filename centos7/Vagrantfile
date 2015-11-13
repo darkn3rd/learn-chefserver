@@ -1,0 +1,50 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+time = Time.now.strftime("%Y%m%d%H%M%S")
+
+Vagrant.configure("2") do |config|
+  # CHEF SERVER
+  config.vm.define "chefserver" do |chefserver|
+    chefserver.vm.box = "geerlingguy/centos7"
+    chefserver.vm.hostname = "chefserver"
+    chefserver.vm.network "private_network", ip: "192.168.50.6"
+
+    chefserver.vm.provider "virtualbox" do |vbox|
+      vbox.memory = 4096
+      vbox.cpus = 2
+      vbox.name = "chefserver_centos7_#{time}"
+    end
+
+    chefserver.vm.provision "shell", path: "setup-all.sh"     # ssh convenience
+    chefserver.vm.provision "shell", path: "setup-chefserver.sh" # install ChefDK
+    # Configure Initial Setup, Admin Account, and Organization
+    chefserver.vm.provision "shell", path: "config-chefserver.sh"
+  end
+
+  # WORKSTATION
+  config.vm.define "work", primary: true do |work|
+    work.vm.box = "geerlingguy/centos7"
+    work.vm.hostname = "work"
+    work.vm.network "private_network", ip: "192.168.50.7"
+
+    work.vm.provider("virtualbox") { |vbox| vbox.name = "work_centos7_#{time}" }
+
+    work.vm.provision "shell", path: "setup-all.sh"    # ssh convenience
+    work.vm.provision "shell", path: "setup-work.sh"   # packages
+    work.vm.provision "shell", path: "setup-chefdk.sh" # install ChefDK
+    # Configure Workstation to Use Chef Server
+    work.vm.provision "shell", path: "config-workstation.sh"
+  end
+
+  # NODE TO CONFIGURE
+  config.vm.define "node" do |node|
+    node.vm.box = "geerlingguy/centos7"
+    node.vm.hostname = "node"
+    node.vm.network "private_network", ip: "192.168.50.8"
+
+    node.vm.provider("virtualbox") { |vbox| vbox.name = "node_centos7_#{time}" }
+
+    node.vm.provision "shell", path: "setup-all.sh"     # ssh convenience
+  end
+end
