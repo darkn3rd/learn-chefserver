@@ -1,12 +1,12 @@
 # **Chef Server Demo Overview**
-by Joaquin Menchaca
-November 15, 2015
+    by Joaquin Menchaca
+    November 15, 2015
 
-Welcome to Chef Server Demo.  Use the instructions below to bring up environment with a Chef Server, Chef development workstation, and a single node to configure and test Chef workflow.
+Welcome to Chef Server Demo.  Use the instructions in `trusty/` or `centos7/` directories to bring up the Chef Server, development workstation, and single node system to cofigure.
 
 ## **Notes**
 
-This system is self contained and should work properly on your host system (tested with ***OS X Yosemite***).  The systems share the same private virtual network, and thus all IP addresses used on the network, e.g. `vboxnet0`, need to be unique.
+This system is self contained and should work properly on your host system (tested on ***OS X 10.10.5 Yosemite***).  The systems share the same private virtual network, e.g. `vboxnet0`, and thus all IP addresses for the guest systems used need to be unique.
 
 ## **Requirements**
   * [VirtualBox](https://www.virtualbox.org/) - required virtual system
