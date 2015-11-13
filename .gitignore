@@ -1,0 +1,7 @@
+.vagrant
+.DS_Store
+chef-starter.zip
+*.deb
+*.rpm
+*.pem
+
