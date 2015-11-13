@@ -1,4 +1,4 @@
-# **Chef Server Demo (Cent OS 7)**
+# **Chef Server Demo Overview**
 by Joaquin Menchaca
 November 15, 2015
 
