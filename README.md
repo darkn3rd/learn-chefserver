@@ -8,6 +8,8 @@ Welcome to Chef Server Demo.  Use the instructions in `trusty/` or `centos7/` di
 
 This system is self contained and should work properly on your host system (tested on ***OS X 10.10.5 Yosemite***).  The systems share the same private virtual network, e.g. `vboxnet0`, and thus all IP addresses for the guest systems used need to be unique.
 
+All systems can be brought up in about 7 to 8 minutes (with Ubuntu Trusty).
+
 ## **Requirements**
   * [VirtualBox](https://www.virtualbox.org/) - required virtual system
   * [Vagrant](https://www.vagrantup.com/) - virtual system automation tools
