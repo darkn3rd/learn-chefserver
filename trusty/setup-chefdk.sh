@@ -1,7 +1,7 @@
 #!/bin/sh
-
 # Target Package
 PACKAGE=chefdk_0.9.0-1_amd64.deb
+PKGPATH=/vagrant/packages/${PACKAGE}
 
 # Install Package If it Exists and not installed already
-[ -f /vagrant/${PACKAGE} ] && dpkg -s chefdk > /dev/null || dpkg -i /vagrant/${PACKAGE}
+[ -f ${PKGPATH} ] && dpkg -s chefdk > /dev/null  2>&1 || dpkg -i ${PKGPATH}
