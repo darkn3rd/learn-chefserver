@@ -19,9 +19,13 @@ All systems can be brought up in about 7 to 8 minutes (with Ubuntu Trusty Tahr) 
 The provisioning shell scripts are very simple, and work on fresh clean systems.  They have some intelligence to not cause problems if provisioned again (idempotent).  They are not smart enough to check for versions, so will not do upgrades, e.g. if ChefDK 0.9 is installed, a new package of ChefDK 0.10 won't be installed.  Upgrading new versions will have to be done manually.
 
 ## **Requirements**
-  * [VirtualBox](https://www.virtualbox.org/) - required virtual system
-  * [Vagrant](https://www.vagrantup.com/) - virtual system automation tools
-  * `wget` command-line tool
+  * All Systems (Win, Linux, OS X)
+    * [VirtualBox](https://www.virtualbox.org/) - required virtual system
+    * [Vagrant](https://www.vagrantup.com/) - virtual system automation tools
+  * Linux or OS X
+    * `wget` command-line tool
+  * Windows
+    * PowerShell 2.0+
 
 ## **Recommendations**
 
@@ -42,7 +46,7 @@ $ brew cask install vagrant
 
 * [Chocolately](https://chocolatey.org/) - command-line tool for installing open-source tools
 * [CygWin](https://www.cygwin.com/) - Unix/Linux command-line tools.
-* [Apt-Cyg](https://github.com/transcode-open/apt-cyg) - command tool for installing CygWin packages
+* [Apt-Cyg](https://github.com/transcode-open/apt-cyg) - command tool for installing CygWin packages from the command-line
 
 With these tools, you could install
 
@@ -52,8 +56,4 @@ C:\> choco install virtualbox
 C:\> choco install vagrant
 ```
 
-Then under CygWin, you can:
-
-```bash
-$ apt-cyg install wget
-```
+For *fetch* PowerShell scripts, you may need to run the PowerShell console as Administrator and run `Set-ExecutionPolicy Unrestricted`, so that you can run PowerShell scripts on your system.
