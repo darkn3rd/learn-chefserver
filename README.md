@@ -6,9 +6,17 @@ Welcome to Chef Server Demo.  Use the instructions in `trusty/` or `centos7/` di
 
 ## **Notes**
 
-This system is self contained and should work properly on your host system (tested on ***OS X 10.10.5 Yosemite***).  The systems share the same private virtual network, e.g. `vboxnet0`, and thus all IP addresses for the guest systems used need to be unique.
+This system is self contained and should work properly on Linux/Unix host systems (tested on ***OS X 10.10.5 Yosemite*** and ***OS X 10.8.5 Mountain Lion***).  To keep things simple, the guest operating systems are all running CentOS 7 or Ubuntu 14.04 Trusty Tahr.
 
-All systems can be brought up in about 7 to 8 minutes (with Ubuntu Trusty).
+### **VirtualBox's Private Network**
+
+All the guest systems share the same private virtual network in VirtualBox, e.g. `vboxnet0`, and thus all IP addresses for the guest systems used need to be unique.
+
+All systems can be brought up in about 7 to 8 minutes (with Ubuntu Trusty Tahr) on a OS X 10.10.5 host.
+
+### **Provisioning**
+
+The provisioning shell scripts are very simple, and work on fresh clean systems.  They have some intelligence to not cause problems if provisioned again (idempotent).  They are not smart enough to check for versions, so will not do upgrades, e.g. if ChefDK 0.9 is installed, a new package of ChefDK 0.10 won't be installed.  Upgrading new versions will have to be done manually.
 
 ## **Requirements**
   * [VirtualBox](https://www.virtualbox.org/) - required virtual system
