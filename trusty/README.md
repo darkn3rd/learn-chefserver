@@ -6,15 +6,26 @@ Welcome to Chef Server Demo.  Use the instructions below to bring up environment
 
 ## **Instructions**
 
-1. Download ChefDK - `./fetch-chefdk.sh`
-2. Download ChefServer - `./fetch-chefserver.sh`
+These were tested only on a host running **OS X** (10.10.5 and 10.8.5), but should work on **Linux**.  This has not been tested on **Windows**, and so may need some adjustments with **CygWin** and **GitBASH**.
+
+### **PART I: Download Packages**
+
+```bash
+$ cd packages
+$ ./fetch-chefdk.sh
+$ ./fetch-chefserver.sh
+$ cd ..
+```
+
+### **PART II: Bring Up Vagrant Environment**
+
 3. Create Environment `vagrant up`
-4. (optional) Start Tunnel
+4. (optional) Start Tunnel `sh ssh-tunnel.sh`
    - Explore Chef Server `https://localhost`
 5. Log into workstation `vagrant ssh`
 6. Create Cookbooks, e.g. `cd ~/chef-repo; chef generate cookbook cookbooks/mywebserver`
 
-## **Sample Script**
+### **PART III: Sample Script**
 
 You can use test script under vagrant account to provision node:
 
