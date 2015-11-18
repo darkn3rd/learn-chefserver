@@ -6,11 +6,11 @@ The chef-repo should be kept under version control, such as [git](http://git-scm
 
 Knife Configuration
 -------------------
-Knife is the [command line interface](https://docs.chef.io/knife.html) for Chef. The chef-repo contains a .chef directory (which is a hidden directory by default) in which the Knife configuration file (knife.rb) is located. This file contains configuration settings for the chef-repo.
+Knife is the [command line interface](https://docs.chef.io/knife.html) for Chef. The chef-repo contains a `.chef` directory (which is a hidden directory by default) in which the Knife configuration file (knife.rb) is located. This file contains configuration settings for the chef-repo.
 
-The knife.rb file is automatically created by the starter kit. This file can be customized to support configuration settings used by [cloud provider options](https://docs.chef.io/plugin_knife.html) and custom [knife plugins](https://docs.chef.io/plugin_knife_custom.html).
+The `knife.rb` file is automatically created by the starter kit. This file can be customized to support configuration settings used by [cloud provider options](https://docs.chef.io/plugin_knife.html) and custom [knife plugins](https://docs.chef.io/plugin_knife_custom.html).
 
-Also located inside the .chef directory are .pem files, which contain private keys used to authenticate requests made to the Chef server. The USERNAME.pem file contains a private key unique to the user (and should never be shared with anyone). The ORGANIZATION-validator.pem file contains a private key that is global to the entire organization (and is used by all nodes and workstations that send requests to the Chef server).
+Also located inside the `.chef` directory are `.pem` files, which contain private keys used to authenticate requests made to the Chef server. The `${USERNAME}.pem` file contains a private key unique to the user (and should never be shared with anyone). The `${ORGANIZATION}-validator.pem` file contains a private key that is global to the entire organization.
 
 More information about knife.rb configuration options can be found in [the documentation for knife](https://docs.chef.io/config_rb_knife.html).
 
