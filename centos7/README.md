@@ -5,8 +5,7 @@
 Welcome to Chef Server Demo.  Use the instructions below to bring up environment with a Chef Server, Chef development workstation, and a single node to configure and test Chef workflow.
 ## **Instructions**
 
-by Joaquin Menchaca
-November 15, 2015
+These were tested only on a host running **OS X** (10.10.5 and 10.8.5), but should work on **Linux**.  This has not been tested on **Windows**, and so may need some adjustments with **CygWin** and **GitBASH**.
 
 ### **PART I: Download Packages**
 
