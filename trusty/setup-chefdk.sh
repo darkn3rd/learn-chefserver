@@ -1,6 +1,6 @@
 #!/bin/sh
 # Target Package
-PACKAGE=chefdk_0.9.0-1_amd64.deb
+PACKAGE=chefdk_0.10.0-1_amd64.deb
 PKGPATH=/vagrant/packages/${PACKAGE}
 
 # Install Package If it Exists and not installed already
