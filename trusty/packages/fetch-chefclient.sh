@@ -3,10 +3,10 @@
 
 ##### Fetch Global Data
 CONFIG="../.config"
-JSON_DATA=$($CONFIG/JSON.sh -l < $CONFIG/global.json | grep '"devkit"')
+JSON_DATA=$($CONFIG/JSON.sh -l < $CONFIG/global.json | grep '"client"')
 
 ##### Local Variables
-PACKAGE=$(echo "${JSON_DATA}" | grep '"package"' | awk '{ print $2 }' | tr -d '"')
+PACKAGE=$(echo ${JSON_DATA} | grep '"package"' | awk '{ print $2 }' | tr -d '"')
 eval PACKAGE_URL=$(echo "${JSON_DATA}" | grep '"url"' | awk '{ print $2 }' | tr -d '"')
 
 ##### Download Locally if file does not exist

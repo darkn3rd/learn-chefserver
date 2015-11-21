@@ -1,0 +1,19 @@
+{
+  "server": {
+    "package": "chef-server-core_12.3.0-1_amd64.deb",
+    "url": "https://packagecloud.io/chef/stable/packages/ubuntu/trusty/$PACKAGE/download"
+  },
+  "devkit": {
+    "package": "chefdk_0.10.0-1_amd64.deb",
+    "url": "https://opscode-omnibus-packages.s3.amazonaws.com/ubuntu/12.04/x86_64/$PACKAGE"
+  },
+  "client": {
+    "package": "chef_12.5.1-1_amd64.deb",
+    "url": "https://opscode-omnibus-packages.s3.amazonaws.com/ubuntu/10.04/x86_64/$PACKAGE"
+  },
+  "ipaddr": {
+    "chefserver": "192.168.50.3",
+    "work": "192.168.50.4",
+    "node": "192.168.50.5"
+  }
+}
