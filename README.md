@@ -64,3 +64,12 @@ You can use PowerShell fetch scripts, or in CygWin download `curl` and `wget` if
 $ apt-cyg install curl
 $ apt-cyg install wget
 ```
+## **Tested Platforms**
+
+* Hosts
+  * Fedora 20 *Heisenbug*, VirtualBox 4.3.34, Vagrant 1.7.4
+  * OS X 10.8.5 *Mountain Lion*, Virtualbox 4.3.20, Vagrant 1.7.4
+  * OS X 10.10.5 *Yosemite*, VirtualBox 5.0.10, Vagrant 1.7.4
+* Guests (chefserver, workstation, node)
+  * Ubuntu 14.04 *Trusty Tahr*
+  * CentOS 7

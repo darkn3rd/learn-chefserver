@@ -37,7 +37,17 @@ PS C:\learn-chefserver\centos7\packages> cd ..
 5. Log into workstation `vagrant ssh`
 6. Create Cookbooks, e.g. `cd ~/chef-repo; chef generate cookbook cookbooks/mywebserver`
 
-### **PART III: Sample Script**
+### **PART III: Logging In to Chef Server**
+
+On the host (Linux or OS X), you can run the ssh-tunnel script.  This will require root privileges (Linux and OS X).  Also, you can run only one tunnel at a time to a Chef Server in this environment.
+
+```bash
+$ sh ssh-tunnel.sh
+```
+
+Now you can use your web browser to open `https://127.0.0.1` and log in with `vagrant` as the user name and password.  You may have to confirm a security exception as the SSL certificate is self-signed.
+
+### **PART IV: Run Sample Chef Recipe**
 
 You can use test script under vagrant account to provision node:
 
