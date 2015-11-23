@@ -1,11 +1,15 @@
 #!/usr/bin/env bash
 
-SYSTEMS="chefserver work node"
-IPADDRESS=3
+##### Fetch Global Data
+CONFIG="/vagrant/.config"
+[ -e $CONFIG/global.json -o -e $CONFIG/JSON.sh ] || { echo "ERROR: No global configuration exists. Exiting"; exit 1; }
+JSON_DATA=$($CONFIG/JSON.sh -l < $CONFIG/global.json | grep '"ipaddr"')
+##### Local Variables
+SYSTEMS=$(echo "${JSON_DATA}" | awk 'BEGIN { FS = "\"" } { print $4}' )
 
-touch /etc/ssh/ssh_config
+cp /dev/null /etc/ssh/ssh_config
 
-for SYSTEM in ${SYSTEMS}; do
+for SYSTEM in $SYSTEMS; do
   if ! grep -q -F "Host ${SYSTEM}" /etc/ssh/ssh_config; then
     ### CREATE GLOBAL SSH CONFIG
     cat <<-CONFIG_EOF >> /etc/ssh/ssh_config
@@ -20,6 +24,6 @@ CONFIG_EOF
   fi
 
   ### CREATE HOSTS
-  grep -q -F "192.168.50.${IPADDRESS} ${SYSTEM}" /etc/hosts || echo "192.168.50.${IPADDRESS} ${SYSTEM}" >> /etc/hosts
-  ((IPADDRESS++))
+  IPADDRESS=$(echo "${JSON_DATA}" | grep "${SYSTEM}" | awk '{ print $2 }' | tr -d '"')
+  grep -q -F "${IPADDRESS} ${SYSTEM}" /etc/hosts || echo "${IPADDRESS} ${SYSTEM}" >> /etc/hosts
 done

@@ -3,12 +3,21 @@
 
 time = Time.now.strftime("%Y%m%d%H%M%S")
 
+begin
+   file = open(".config/global.json")
+ rescue StandardError=>e
+   puts "Error: #{e}"
+ else
+   json = file.read
+   ipaddr = JSON.parse(json)['ipaddr']
+end
+
 Vagrant.configure("2") do |config|
   # CHEF SERVER
   config.vm.define "chefserver" do |chefserver|
     chefserver.vm.box = "geerlingguy/centos7"
     chefserver.vm.hostname = "chefserver"
-    chefserver.vm.network "private_network", ip: "192.168.50.6"
+    chefserver.vm.network "private_network", ip: "#{ipaddr['chefserver']}"
 
     chefserver.vm.provider "virtualbox" do |vbox|
       vbox.memory = 4096
@@ -26,7 +35,7 @@ Vagrant.configure("2") do |config|
   config.vm.define "work", primary: true do |work|
     work.vm.box = "geerlingguy/centos7"
     work.vm.hostname = "work"
-    work.vm.network "private_network", ip: "192.168.50.7"
+    work.vm.network "private_network", ip: "#{ipaddr['work']}"
 
     work.vm.provider("virtualbox") { |vbox| vbox.name = "work_centos7_#{time}" }
 
@@ -41,7 +50,7 @@ Vagrant.configure("2") do |config|
   config.vm.define "node" do |node|
     node.vm.box = "geerlingguy/centos7"
     node.vm.hostname = "node"
-    node.vm.network "private_network", ip: "192.168.50.8"
+    node.vm.network "private_network", ip: "#{ipaddr['node']}"
 
     node.vm.provider("virtualbox") { |vbox| vbox.name = "node_centos7_#{time}" }
 
