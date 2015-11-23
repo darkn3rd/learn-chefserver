@@ -1,12 +1,16 @@
 # **Chef Server Demo Overview**
     by Joaquin Menchaca
+    Copyright 2015 Joaquin Menchaca,
+    License [Attribution CC BY](https://creativecommons.org/licenses/by/4.0/legalcode)
     November 15, 2015
 
-Welcome to Chef Server Demo.  Use the instructions in `trusty/` or `centos7/` directories to bring up the Chef Server, development workstation, and single node system to cofigure.
+Welcome to Chef Server Demo.  You can bring up complete Chef Servers on your laptop (or desktop) without the need to create accounts on some online system for Chef Server access or virtual systems.  These scripts only require some command line tools and [VirtualBox](https://www.virtualbox.org/) and [Vagrant](https://www.vagrantup.com/) applications.
+
+Use the instructions in `trusty/` or `centos7/` directories to bring up the Chef Server, development workstation, and single node system to configure.
 
 ## **Notes**
 
-This system is self contained and should work properly on Linux/Unix host systems (tested on ***OS X 10.10.5 Yosemite*** and ***OS X 10.8.5 Mountain Lion***).  To keep things simple, the guest operating systems are all running CentOS 7 or Ubuntu 14.04 Trusty Tahr.
+This system is self contained and should work properly on Linux/Unix host systems. To keep things simple, the guest operating systems are all running CentOS 7 or Ubuntu 14.04 Trusty Tahr.
 
 PowerShell fetch scripts have been tested on Windows 7 SP1 (WinNT 6.1) with PowerShell 1.0.
 
@@ -33,6 +37,7 @@ The provisioning shell scripts are very simple, and work on fresh clean systems.
 
 ### **OS X**
 
+* [XCode](https://developer.apple.com/xcode/) Command Line Tools - From AppStore or https://developer.apple.com.
 * [Homebrew](http://brew.sh/) - coomand-line tool for installing tools and libraries
 * [Cask](http://caskroom.io/) - command-line tool for installing full applications
 
