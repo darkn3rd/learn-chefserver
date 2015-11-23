@@ -9,11 +9,24 @@ These were tested only on a host running **OS X** (10.10.5 and 10.8.5), but shou
 
 ### **PART I: Download Packages**
 
+On OS X or Linux:
+
 ```bash
 $ cd packages
 $ ./fetch-chefdk.sh
 $ ./fetch-chefserver.sh
 $ cd ..
+```
+
+On Windows:
+
+This will require PowerShell profile configured to allow user to execute PowerShell Scripts. See [Set-ExecutionPolicy](https://technet.microsoft.com/en-us/library/hh849812.aspx).
+
+```batch
+PS C:\learn-chefserver\centos7> cd packages
+PS C:\learn-chefserver\centos7\packages> .\fetch-chefdk.ps1
+PS C:\learn-chefserver\centos7\packages> .\fetch-chefserver.ps1
+PS C:\learn-chefserver\centos7\packages> cd ..
 ```
 
 ### **PART II: Bring Up Vagrant Environment**

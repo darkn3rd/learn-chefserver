@@ -8,6 +8,8 @@ Welcome to Chef Server Demo.  Use the instructions in `trusty/` or `centos7/` di
 
 This system is self contained and should work properly on Linux/Unix host systems (tested on ***OS X 10.10.5 Yosemite*** and ***OS X 10.8.5 Mountain Lion***).  To keep things simple, the guest operating systems are all running CentOS 7 or Ubuntu 14.04 Trusty Tahr.
 
+PowerShell fetch scripts have been tested on Windows 7 SP1 (WinNT 6.1) with PowerShell 1.0.
+
 ### **VirtualBox's Private Network**
 
 All the guest systems share the same private virtual network in VirtualBox, e.g. `vboxnet0`, and thus all IP addresses for the guest systems used need to be unique.
