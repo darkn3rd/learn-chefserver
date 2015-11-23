@@ -57,5 +57,3 @@ C:\> choco install cygwin
 C:\> choco install virtualbox
 C:\> choco install vagrant
 ```
-
-For *fetch* PowerShell scripts, you may need to run the PowerShell console as Administrator and run `Set-ExecutionPolicy Unrestricted`, so that you can run PowerShell scripts on your system.
