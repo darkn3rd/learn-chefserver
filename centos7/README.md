@@ -20,7 +20,7 @@ $ cd ..
 
 On Windows:
 
-This will require PowerShell profile configured to allow user to execute PowerShell Scripts. See [Set-ExecutionPolicy](https://technet.microsoft.com/en-us/library/hh849812.aspx).
+This will require PowerShell profile configured to allow user to execute PowerShell Scripts. See [Set-ExecutionPolicy](https://technet.microsoft.com/en-us/library/hh849812.aspx).  These will have to be executed in PowerShell, unless care was taken to configure Powershell scripts to be executed under Command Shell.
 
 ```batch
 PS C:\learn-chefserver\centos7> cd packages
