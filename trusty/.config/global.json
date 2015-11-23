@@ -11,6 +11,21 @@
     "package": "chef_12.5.1-1_amd64.deb",
     "url": "https://opscode-omnibus-packages.s3.amazonaws.com/ubuntu/10.04/x86_64/$PACKAGE"
   },
+  "analytics": {
+    "package": "opscode-analytics_1.2.0-1_amd64.deb",
+    "url": "https://packagecloud.io/chef/stable/packages/ubuntu/trusty/$PACKAGE/download",
+    "sha1": "2d8308f9d2afb826b4aff93bcc26e9d84b50585a"
+  },
+  "reporting": {
+    "package": "opscode-reporting_1.5.5-1_amd64.deb",
+    "url": "https://packagecloud.io/chef/stable/packages/ubuntu/trusty/$PACKAGE/download",
+    "sha1": "937b294ee55bc1ad903c9339c8f0bb91cd8bc2a6"
+  },
+  "manage": {
+    "package": "opscode-manage_1.21.0-1_amd64.deb",
+    "url": "https://packagecloud.io/chef/stable/packages/ubuntu/trusty/$PACKAGE/download",
+    "sha1": "84582862ce47d5f6db1e1ed89021c4b8efbda847"
+  },
   "ipaddr": {
     "chefserver": "192.168.50.3",
     "work": "192.168.50.4",

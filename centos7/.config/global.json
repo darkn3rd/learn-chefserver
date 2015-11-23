@@ -11,6 +11,21 @@
     "package": "chef-12.5.1-1.el7.x86_64.rpm",
     "url": "https://opscode-omnibus-packages.s3.amazonaws.com/el/7/x86_64/$PACKAGE"
   },
+  "analytics": {
+    "package": "opscode-analytics-1.2.0-1.el7.x86_64.rpm",
+    "url": "https://packagecloud.io/chef/stable/packages/el/7/$PACKAGE/download",
+    "sha1": "5a40c03be7ab1f68a10e7bd106b60c71931ab38b"
+  },
+  "reporting": {
+    "package": "opscode-reporting-1.5.5-1.el7.x86_64.rpm",
+    "url": "https://packagecloud.io/chef/stable/packages/el/7/$PACKAGE/download",
+    "sha1": "eacc2d9af5af660eae072ffe0cc342412d6d74b8"
+  },
+  "manage": {
+    "package": "opscode-manage-1.21.0-1.el7.x86_64.rpm",
+    "url": "https://packagecloud.io/chef/stable/packages/el/7/$PACKAGE/download",
+    "sha1": "1b12e6c3d52b5809fa9d1507a4b3f40a26c875dd"
+  },
   "ipaddr": {
     "chefserver": "192.168.50.6",
     "work": "192.168.50.7",
