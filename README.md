@@ -57,3 +57,10 @@ C:\> choco install cygwin
 C:\> choco install virtualbox
 C:\> choco install vagrant
 ```
+
+You can use PowerShell fetch scripts, or in CygWin download `curl` and `wget` if you prefer to try BASH fetch scripts...
+
+```bash
+$ apt-cyg install curl
+$ apt-cyg install wget
+```
