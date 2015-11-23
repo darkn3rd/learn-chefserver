@@ -1,6 +1,4 @@
 # NOTE: THIS IS RUN ON HOST SYSTEM
-#  This package works for Ubuntu 10.04, 12.04, 14.04
-
 ##### JSON PARSER FUNCTION (PowerShell 2.0 compatible)
 Function ConvertFromJson2($jsonString) {
     add-type -assembly system.web.extensions

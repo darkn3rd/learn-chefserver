@@ -1,7 +1,10 @@
 #!/bin/sh
+##### Fetch Global Data
+CONFIG="/vagrant/.config"
+JSON_DATA=$($CONFIG/JSON.sh -l < $CONFIG/global.json | grep '"devkit"')
 
-# Target Package
-PACKAGE=chefdk-0.10.0-1.el7.x86_64.rpm
+##### Local Variables
+PACKAGE=$(echo "${JSON_DATA}" | grep '"package"' | awk '{ print $2 }' | tr -d '"')
 PKGPATH=/vagrant/packages/${PACKAGE}
 
 # Install Package If it Exists and not installed already
