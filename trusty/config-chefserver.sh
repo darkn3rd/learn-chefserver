@@ -13,13 +13,32 @@ CHEFSRVR_EOF
 
 chef-server-ctl reconfigure
 
+## CONFIG DIRECTORIES
+CONFIG="/vagrant/.config"
+PKGDIR=/vagrant/packages
+
 ## MANAGEMENT CONSOLE
-chef-server-ctl install opscode-manage
+JSON_DATA=$($CONFIG/JSON.sh -l < $CONFIG/global.json | grep '"manage"')
+PACKAGE=$(echo "${JSON_DATA}" | grep '"package"' | awk '{ print $2 }' | tr -d '"')
+# install from local package source or from Internet
+if [ -f "${PKGDIR}/${PACKAGE}" ]; then
+  chef-server-ctl install opscode-manage --path ${PKGDIR}
+else
+  chef-server-ctl install opscode-manage
+fi
+
 chef-server-ctl reconfigure
 opscode-manage-ctl reconfigure
 
 ## REPORTING FEATURE
-chef-server-ctl install opscode-reporting
+JSON_DATA=$($CONFIG/JSON.sh -l < $CONFIG/global.json | grep '"reporting"')
+PACKAGE=$(echo "${JSON_DATA}" | grep '"package"' | awk '{ print $2 }' | tr -d '"')
+# install from local package source or from Internet
+if [ -f "${PKGDIR}/${PACKAGE}" ]; then
+  chef-server-ctl install opscode-reporting --path ${PKGDIR}
+else
+  chef-server-ctl install opscode-reporting
+fi
 chef-server-ctl reconfigure
 opscode-reporting-ctl reconfigure
 
