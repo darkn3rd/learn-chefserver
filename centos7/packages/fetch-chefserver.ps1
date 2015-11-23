@@ -14,8 +14,8 @@ $JSON_STR = $(Get-Content $CONFIG\global.json)
 $JSON_DATA = ConvertFromJson2($JSON_STR)
 
 ##### Local Variables
-$PACKAGE = $JSON_DATA["client"]["package"]
-$PACKAGE_URL = $ExecutionContext.InvokeCommand.ExpandString($JSON_DATA["client"]["url"])
+$PACKAGE = $JSON_DATA["server"]["package"]
+$PACKAGE_URL = $ExecutionContext.InvokeCommand.ExpandString($JSON_DATA["server"]["url"])
 
 ##### Download Locally if file does not exist
 if (-Not $(Test-Path $PACKAGE)) {
