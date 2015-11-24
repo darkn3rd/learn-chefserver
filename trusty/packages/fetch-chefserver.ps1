@@ -5,7 +5,8 @@
 # PURPOSE: Downloads Chef Core Server from Opscode
 # DEPENDENCIES:
 #  * Windows NT 6.1+ (Windows 7+) with PowerShell 1.0+
-#  * Global Configuration - JSON.sh, global.json
+#  * Global Configuration - global.json
+#  * System.web.extensions assembly for JSON parsing
 # NOTES:
 #  * This script should be run on the host system (Windows NT 6.1+)
 
