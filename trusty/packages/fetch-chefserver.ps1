@@ -1,5 +1,13 @@
-# NOTE: THIS IS RUN ON HOST SYSTEM
-#  This package works for Ubuntu 10.04, 12.04, 14.04
+# NAME: fetch-chefserver.ps1
+# AUTHOR: Joaquin Menchaca
+# CREATED: 2015-11-23
+#
+# PURPOSE: Downloads Chef Core Server from Opscode
+# DEPENDENCIES:
+#  * Windows NT 6.1+ (Windows 7+) with PowerShell 1.0+
+#  * Global Configuration - JSON.sh, global.json
+# NOTES:
+#  * This script should be run on the host system (Windows NT 6.1+)
 
 ##### JSON PARSER FUNCTION (PowerShell 2.0 compatible)
 Function ConvertFromJson2($jsonString) {

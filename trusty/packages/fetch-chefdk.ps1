@@ -1,4 +1,14 @@
-# NOTE: THIS IS RUN ON HOST SYSTEM
+# NAME: fetch-cheddk.ps1
+# AUTHOR: Joaquin Menchaca
+# CREATED: 2015-11-23
+#
+# PURPOSE: Downloads Chef Development Kit from Opscode
+# DEPENDENCIES:
+#  * Windows NT 6.1+ (Windows 7+) with PowerShell 1.0+
+#  * Global Configuration - JSON.sh, global.json
+# NOTES:
+#  * This script should be run on the host system (Windows NT 6.1+)
+
 ##### JSON PARSER FUNCTION (PowerShell 2.0 compatible)
 Function ConvertFromJson2($jsonString) {
     add-type -assembly system.web.extensions

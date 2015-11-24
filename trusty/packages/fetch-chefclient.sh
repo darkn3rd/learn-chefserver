@@ -1,5 +1,14 @@
 #!/bin/sh
-# NOTE: THIS IS RUN ON HOST SYSTEM
+# NAME: fetch-chefclient.sh
+# AUTHOR: Joaquin Menchaca
+# CREATED: 2015-11-23
+#
+# PURPOSE: Downloads Chef Client from Opscode
+# DEPENDENCIES:
+#  * POSIX Shell, POSIX Commands (awk, grep), Curl
+#  * Global Configuration - JSON.sh, global.json
+# NOTES:
+#  * This script should be run on the host system (Linux/OSX/CygWin)
 
 ##### Fetch Global Data
 CONFIG="../.config"

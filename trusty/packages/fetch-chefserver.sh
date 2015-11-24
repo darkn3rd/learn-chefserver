@@ -1,6 +1,16 @@
 #!/bin/sh
-# NOTE: THIS IS RUN ON HOST SYSTEM
-#  This package works for Ubuntu 10.04, 12.04, 14.04
+# NAME: fetch-chefserver.sh
+# AUTHOR: Joaquin Menchaca
+# CREATED: 2015-11-23
+#
+# PURPOSE: Downloads Chef Core Server from Opscode
+# DEPENDENCIES:
+#  * POSIX Shell, POSIX Commands (awk, grep)
+#  * GNU Wget 1.15+ (supports URLs w/ redicrection)
+#  * Global Configuration - JSON.sh, global.json
+# NOTES:
+#  * This script should be run on the host system (Linux/OSX/CygWin)
+
 ##### Fetch Global Data
 CONFIG="../.config"
 JSON_DATA=$($CONFIG/JSON.sh -l < $CONFIG/global.json | grep '"server"')
