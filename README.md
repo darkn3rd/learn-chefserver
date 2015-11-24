@@ -1,7 +1,8 @@
 # **Chef Server Demo Overview**
     by Joaquin Menchaca
     Copyright 2015 Joaquin Menchaca,
-    License [Attribution CC BY](https://creativecommons.org/licenses/by/4.0/legalcode)
+    License:  Attribution CC BY -
+      https://creativecommons.org/licenses/by/4.0/legalcode
     November 15, 2015
 
 Welcome to Chef Server Demo.  You can bring up complete Chef Servers on your laptop (or desktop) without the need to create accounts on some online system for Chef Server access or virtual systems.  These scripts only require some command line tools and [VirtualBox](https://www.virtualbox.org/) and [Vagrant](https://www.vagrantup.com/) applications.
