@@ -1,4 +1,15 @@
 #!/usr/bin/env bash
+# NAME: setup-all.sh
+# AUTHOR: Joaquin Menchaca
+# CREATED: 2015-11-23
+#
+# PURPOSE: Configures `/etc/hosts` and global ssh configuration for each
+#  password-less system to system communication through ssh.
+# DEPENDENCIES:
+#  * GNU Bash, POSIX Commands (awk, grep)
+#  * Global Configuration - JSON.sh, global.json
+# NOTES:
+#  * This script will be run on the guest operating system
 
 ##### Fetch Global Data
 CONFIG="/vagrant/.config"

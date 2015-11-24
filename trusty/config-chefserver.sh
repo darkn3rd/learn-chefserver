@@ -1,4 +1,16 @@
 #!/bin/sh
+# NAME: config-chefserver.sh
+# AUTHOR: Joaquin Menchaca
+# CREATED: 2015-11-23
+#
+# PURPOSE: Configures installed Chef Server and installs reporting and
+#  management console, configures administration accounds, and generates
+#  private keys.
+# DEPENDENCIES:
+#  * Chef Server Package installed
+#  * Global Configuration (optional) - JSON.sh, global.json
+# NOTES:
+#  * This script will be run on the guest operating system
 
 # INITIAL CONFIGURATION
 cat <<-CHEFSRVR_EOF > /etc/opscode/chef-server.rb

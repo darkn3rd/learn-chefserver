@@ -1,4 +1,15 @@
 #!/bin/sh
+# NAME: setup-work.sh
+# AUTHOR: Joaquin Menchaca
+# CREATED: 2015-11-23
+#
+# PURPOSE: Install tools (tree, curl, unzip, vim) and basic colorized vim
+#  configuration.
+# DEPENDENCIES:
+#  * Updated package links
+#  * POSIX Shell
+# NOTES:
+#  * This script will be run on the guest operating system
 
 # Packages Used in Demo
 apt-get -y install tree curl unzip vim
