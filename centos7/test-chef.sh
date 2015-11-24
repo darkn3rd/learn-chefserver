@@ -1,8 +1,17 @@
-# TEST CHEF SCRIPT
-#  This is a demonstration script to show the work flow and healthy interaction
-#  NOTE: RUN THIS UNDER VAGRANT ACCOUNT
+# NAME: test-chef.sh
+# AUTHOR: Joaquin Menchaca
+# CREATED: 2015-11-23
 #
-
+# PURPOSE: Demo "Hello World" style recipe to test workflow and application of
+#  Chef recipe from the Chef Server with knide.  Thus this is sort of like a
+#  smokescreen test to test the functionality of the system.
+# DEPENDENCIES:
+#  * Provisioned Chef Server, Workstation, and Node systems
+# NOTES:
+#  * This script will be run on guest workstation: `vagrant ssh work`
+#  * Note: `knife bootstrap` installs old version of Chef Client, e.g. 11.8.2.
+#      For this simple test, this does not cause a problem.
+#      Advanced recipes need to install a later version of chef client.
 cd ~/chef-repo
 
 #### STEP 1: GENERATE COOKBOOK
