@@ -59,6 +59,7 @@ Vagrant.configure("2") do |config|
     work.vm.provision "shell", path: "scripts/setup-chefdk.sh" # install ChefDK
     # Configure Workstation to Use Chef Server
     work.vm.provision "shell", path: "scripts/config-workstation.sh"
+    work.vm.provision "shell", path: "scripts/chef-starter.sh"
   end
 
   # NODE TO CONFIGURE

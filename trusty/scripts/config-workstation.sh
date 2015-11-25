@@ -14,4 +14,4 @@
 #### copy chef configuration directory and keys
 su vagrant -c 'cp -r /vagrant/chef-repo ~vagrant'
 #### install certificate into chef's trusted certificate area
-su vagrant -c 'cd ~vagrant/chef-repo; knife ssl fetch'
+su vagrant -c 'knife ssl fetch'
