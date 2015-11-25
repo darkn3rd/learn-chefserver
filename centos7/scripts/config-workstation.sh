@@ -11,7 +11,7 @@
 # NOTES:
 #  * This script will be run on the guest operating system
 
-# COPY CHEF-REPO w/ KEYS
+#### copy chef configuration directory and keys
 su vagrant -c 'cp -r /vagrant/chef-repo ~vagrant'
-# INSTALL KEY INTO TRUSTED KEY AREA
+#### install certificate into chef's trusted certificate area
 su vagrant -c 'cd ~vagrant/chef-repo; knife ssl fetch'
