@@ -3,6 +3,7 @@ chef-starter.zip
 *.deb
 *.rpm
 *.pem
+encrypted_data_bag_secret
 
 # OS X
 .DS_Store
