@@ -14,7 +14,7 @@
 #  * Global Configuration - global.json
 # NOTES:
 #  * VirtualBox systems will need to have GuestEditions installed so that
-#  *  `/vagrant` will be mounted in the guest operating system
+#    `/vagrant` will be mounted in the guest operating system
 
 time = Time.now.strftime("%Y%m%d%H%M%S")
 

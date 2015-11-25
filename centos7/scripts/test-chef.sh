@@ -1,3 +1,4 @@
+#!/bin/sh
 # NAME: test-chef.sh
 # AUTHOR: Joaquin Menchaca
 # CREATED: 2015-11-23

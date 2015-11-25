@@ -11,7 +11,6 @@
 # NOTES:
 #  * This script will be run on the guest operating system
 
-
 # Packages Used in Demo
 yum install -y tree curl unzip vim
 
