@@ -12,7 +12,7 @@
 #  * This script will be run on the guest operating system
 
 #### copy chef-starter repository
-su vagrant -c 'cp -r /vagrant/chef-repo ~vagrant'
+su vagrant -c 'cp -r /vagrant/chef-starter ~vagrant/chef-repo'
 #### copy chef configuration directory and keys
 su vagrant -c 'cp -v /vagrant/.chef/*.pem ~vagrant/chef-repo/.chef'
 #### install certificate into chef's trusted certificate area
