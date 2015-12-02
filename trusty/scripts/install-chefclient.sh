@@ -6,7 +6,7 @@
 # PURPOSE: Installs recent Chef Client on Ubuntu 14.04 Trusty Tahr.
 # DEPENDENCIES:
 #  * Updated package links
-#  * POSIX Shell, POSIX Commands (awk, grep)
+#  * POSIX Shell, POSIX Commands (awk, grep, cut, tr)
 #  * Global Configuration - JSON.sh, global.json
 #  * Package downloaded previously
 # NOTES:
