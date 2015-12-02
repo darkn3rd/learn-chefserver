@@ -15,6 +15,7 @@
 #  * This script will be run on host (Linux/OS X)
 #  * This has NOT been tested on Windows with either WinSSHD or CygWin
 
+cd ..
 IDENTITY_FILE=$(vagrant ssh-config chefserver | grep -o '\/.*chefserver.*')
 PORT=$(vagrant ssh-config chefserver | grep -oE '[0-9]{4,5}')
 
