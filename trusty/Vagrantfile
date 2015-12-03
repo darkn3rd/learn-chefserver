@@ -8,7 +8,7 @@
 # PURPOSE: Configuration Script evalued by Vagrant.  Does the following:
 #  * Configures three systems: chefserver, work, node
 #  * Configures private network with static IP addresses
-#  * Provions systems using shell scripts
+#  * provisions systems using shell scripts
 # DEPENDENCIES:
 #  * Vagrant 1.7.4+, VirtualBox 4.3.x or VirtualBox 5.x
 #  * Global Configuration - global.json
