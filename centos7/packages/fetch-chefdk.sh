@@ -10,6 +10,9 @@
 # NOTES:
 #  * This script should be run on the host system (Linux/OSX/CygWin)
 
+##### Test for Curl tool (needed check on Windows)
+[ -z $(which curl) ] && { echo "ERROR: Curl not found. Install curl"; exit 1 ; }
+
 ##### Fetch Global Data
 CONFIG="../.config"
 JSON_DATA=$($CONFIG/JSON.sh -l < $CONFIG/global.json | grep '"devkit"')
