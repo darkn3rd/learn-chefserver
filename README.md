@@ -31,6 +31,7 @@ The provisioning shell scripts are very simple, and work on fresh clean systems.
     * [Vagrant](https://www.vagrantup.com/) - virtual system automation tools
   * Linux or OS X
     * `wget` command-line tool
+    * `curl` command-line tool
   * Windows
     * PowerShell 2.0+
 
@@ -52,11 +53,14 @@ $ brew cask install vagrant
 
 ### **Windows**
 
-* [Chocolately](https://chocolatey.org/) - command-line tool for installing open-source tools
+* [Git for Windows](https://git-for-windows.github.io/) - Git tools and Bash shell for Windows.
+* [Chocolately](https://chocolatey.org/) - command-line tool for installing open-source tools and applications.
 * [CygWin](https://www.cygwin.com/) - Unix/Linux command-line tools.
 * [Apt-Cyg](https://github.com/transcode-open/apt-cyg) - command tool for installing CygWin packages from the command-line
 
-With these tools, you could install
+#### **Chocolately**
+
+With  [Chocolately](https://chocolatey.org/), you can easily install applications from the Internet.
 
 ```batch
 C:\> choco install cygwin
@@ -64,18 +68,43 @@ C:\> choco install virtualbox
 C:\> choco install vagrant
 ```
 
-You can use PowerShell fetch scripts, or in CygWin download `curl` and `wget` if you prefer to try BASH fetch scripts...
+#### **Git For Windows**
+
+[Git for Windows](https://git-for-windows.github.io/) comes bundled with a bash environment.  This comes with the `curl` comand, but not `wget`.  You can install ChefClient and ChefDK using shell scripts, and use PowerShell for to download ChefServer and ChefServer packages.
+
+#### **CygWin and Apt-Cyg**
+
+Assuming the [CygWin](https://www.cygwin.com/) installer (`setup-x86_64.exe`) is in your local Downloads folder, you can do the following to install ***apt-cyg***:
+
+```bash
+$ cd $USERPROFILE/Downloads
+$ ./setup-x86_64.exe -q -P wget
+$ wget rawgit.com/transcode-open/apt-cyg/master/apt-cyg
+$ chmod +x apt-cyg
+$ mv apt-cyg /usr/local/bin/
+```
+
+Useful tools can then be installed in this fashion:
 
 ```bash
 $ apt-cyg install curl
-$ apt-cyg install wget
 ```
+
+#### **PowerShell**
+
+Optionally you can use PowerShell instead of shell scripts to download the packages.  If using PowerShell scripts (`.ps1`) in Windows Command Shell, Git-Bash, or CygWin, you need would need to run the script with these options:
+
+```
+powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File myscript.ps1
+```
+
 ## **Tested Platforms**
 
 * Hosts
   * Fedora 20 *Heisenbug*, VirtualBox 4.3.34, Vagrant 1.7.4
   * OS X 10.8.5 *Mountain Lion*, Virtualbox 4.3.20, Vagrant 1.7.4
   * OS X 10.10.5 *Yosemite*, VirtualBox 5.0.10, Vagrant 1.7.4
+  * Windows 10, VirtualBox 5.0.10, Vagrant 1.7.4
 * Guests (chefserver, workstation, node)
   * Ubuntu 14.04 *Trusty Tahr*
   * CentOS 7
