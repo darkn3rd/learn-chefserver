@@ -21,6 +21,10 @@ SYSTEMS=$(echo "${JSON_DATA}" | awk 'BEGIN { FS = "\"" } { print $4}' )
 cp /dev/null /etc/ssh/ssh_config
 
 for SYSTEM in $SYSTEMS; do
+  # Copy Private Key Locally (vbox mounted dirs have strange persmissions)
+  cp -v /vagrant/.vagrant/machines/${SYSTEM}/virtualbox/private_key /etc/ssh/${SYSTEM}_key
+  chmod 644 /etc/ssh/${SYSTEM}_key
+
   if ! grep -q -F "Host ${SYSTEM}" /etc/ssh/ssh_config; then
     ### CREATE GLOBAL SSH CONFIG
     cat <<-CONFIG_EOF >> /etc/ssh/ssh_config
@@ -29,7 +33,7 @@ Host ${SYSTEM}
   UserKnownHostsFile /dev/null
   IdentitiesOnly yes
   User vagrant
-  IdentityFile /vagrant/.vagrant/machines/${SYSTEM}/virtualbox/private_key
+  IdentityFile /etc/ssh/${SYSTEM}_key
   PasswordAuthentication no
 CONFIG_EOF
   fi
