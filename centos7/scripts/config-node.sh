@@ -13,5 +13,7 @@ CONFIG="/vagrant/.config"
 SECRET=${CONFIG}/encrypted_data_bag_secret
 
 #### Copy secret file if it exists
-#mkdir -p /etc/chef
-[ -e ${SECRET} ] && cp -v ${SECRET} /etc/chef
+if [ -e ${SECRET} ]; then
+   mkdir -vp /etc/chef
+   cp -v ${SECRET} /etc/chef
+fi
