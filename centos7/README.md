@@ -125,7 +125,7 @@ After the key is installed into your node, then you the process to encrypt passw
 $ KEY_NAME="encrypted_data_bag_secret"
 $ KEY_PATH="/vagrant/.config/${KEY_NAME}"
 $ cd ~chef-repo
-$ knife data bag create passwords
+$ knife data bag create passwords  # create data bag on Chef Server
 $ mkdir -p data_bags/passwords
 $ cat <<-SECRET_EOF > data_bags/passwords/srv_pswd.json
 {
@@ -133,7 +133,9 @@ $ cat <<-SECRET_EOF > data_bags/passwords/srv_pswd.json
   "password": "vagrant"
 }
 SECRET_EOF
+$ # upload encrypted data bag to Chef Server
 $ knife data bag from file passwords srv_pswd.json --secret-file ${KEY_PATH}
+$ # encrypt local copy of file
 $ knife data bag from file passwords sql_server_root_password.json --secret-file ${KEY_PATH} --local-mode
 ```
 
