@@ -70,7 +70,7 @@ C:\> choco install vagrant
 
 #### **Git For Windows**
 
-[Git for Windows](https://git-for-windows.github.io/) comes bundled with a bash environment.  This comes with the `curl` comand, but not `wget`.  You can install ChefClient and ChefDK using shell scripts, and use PowerShell for to download ChefServer and ChefServer packages.
+[Git for Windows](https://git-for-windows.github.io/) comes bundled with a bash environment.  This comes with the `curl` command, but not `wget`.  You can download ChefClient and ChefDK using shell scripts, and use PowerShell for to download ChefServer and ChefServer packages.
 
 #### **CygWin and Apt-Cyg**
 

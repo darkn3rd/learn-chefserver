@@ -8,6 +8,8 @@
 # DEPENDENCIES:
 #  * GNU Bash, POSIX Commands (awk, grep)
 #  * Global Configuration - JSON.sh, global.json
+#  * VirtualBox Guest Editions installed on guest system
+#  * Local host . directory mounted as /vagrant on guest system
 # NOTES:
 #  * This script will be run on the guest operating system
 
@@ -21,9 +23,14 @@ SYSTEMS=$(echo "${JSON_DATA}" | awk 'BEGIN { FS = "\"" } { print $4}' )
 cp /dev/null /etc/ssh/ssh_config
 
 for SYSTEM in $SYSTEMS; do
-  # Copy Private Key Locally (vbox mounted dirs have strange persmissions)
-  cp -v /vagrant/.vagrant/machines/${SYSTEM}/virtualbox/private_key /etc/ssh/${SYSTEM}_key
-  chmod 644 /etc/ssh/${SYSTEM}_key
+  # Reference Identity File
+  # Prerequisite:
+  #   * local directory on host　must be mounted on guest system as
+  #　  　/vagrant (default behavior)
+  #   * guest-edtitions drivers must be installed on guest
+  # Note: As these are created when the machine is brought up, they may not be available.
+  #       Thus we have to reference where they will be located in the future.
+  IDENTITYFILE=/vagrant/.vagrant/machines/${SYSTEM}/virtualbox/private_key
 
   # Add Entry to SSH Configuration if not already added
   if ! grep -q -F "Host ${SYSTEM}" /etc/ssh/ssh_config; then
@@ -34,7 +41,7 @@ Host ${SYSTEM}
   UserKnownHostsFile /dev/null
   IdentitiesOnly yes
   User vagrant
-  IdentityFile /etc/ssh/${SYSTEM}_key
+  IdentityFile ${IDENTITYFILE}
   PasswordAuthentication no
 CONFIG_EOF
   fi

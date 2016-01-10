@@ -31,10 +31,10 @@ PKG_VER=$(echo ${PACKAGE} | awk -F "_" '{ print $2 }' | cut -d. -f1,2 | tr -d '.
 if dpkg -s chef > /dev/null 2>&1; then
   CURR_VER=$(dpkg-query -W -f='${Version}\n' chef | cut -d. -f1,2 | tr -d '.')
   if [ ${PKG_VER} -gt ${CURR_VER} ]; then
-    rm -rf /etc/chef /var/chef   # purge existing files
-    dpkg -r chef                 # remove older chef package
-    dpkg -i ${PKGPATH}           # install target chefclient package
+    rm -rfv /etc/chef /var/chef /var/log/chef # purge existing files
+    dpkg -r chef                              # remove older chef package
+    dpkg -i ${PKGPATH}                        # install target chefclient pkg
   fi
 else
-  dpkg -i ${PKGPATH}             # install target chefclient ppackage
+  dpkg -i ${PKGPATH}                          # install target chefclient pkg
 fi

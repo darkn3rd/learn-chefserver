@@ -21,27 +21,44 @@ If you have `curl` installed (installed by default on Linux, OS X, or MSYS), you
 $ cd packages
 $ ./fetch-chefdk.sh
 $ ./fetch-chefclient.sh
-$ ./fetch-chefserver.sh
+$ ./fetch-chefserver.sh # requires wget
 $ # optional
-$ ./fetch-packages.sh
+$ ./fetch-packages.sh # requires wget
 $ cd ..
 ```
 
 The command `curl` can be found installed by default in most environments (except CygWin) and `wget` most certainly needs to be installed by whatever package manager is available in your environment.
 
-#### **Running Powershell Scripts from CMD or BASH**
+#### **Running Powershell Scripts from BASH**
 
-In MSYS, CygWin, or Windows Command Shell (`cmd`), you can run these commands:
+In MSYS or CygWin you can run these commands:
 
 ```bash
 $ cd packages
-$ powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File fetch-chefdk
-$ powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File fetch-chefclient
-$ powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File fetch-chefserver.sh
+$ alias pshell="powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File"
+$ pshell fetch-chefdk.ps1
+$ pshell fetch-chefclient.ps1
+$ pshell fetch-chefserver.ps1
 $ # optional
-$ powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File fetch-packages.sh
+$ pshell fetch-packages.ps1
 $ ..
 ```
+
+#### **Running Powershell Scripts from CMD**
+
+In Windows Command Shell (`cmd`), you can run these commands:
+
+```batch
+CD packages
+DOSKEY pshell="powershell.exe -NoLogo -NoProfile -ExecutionPolicy Bypass -File" $1
+pshell fetch-chefdk.ps1
+pshell fetch-chefclient.ps1
+pshell fetch-chefserver.ps1
+REM optional
+pshell fetch-packages.ps1
+CD ..
+```
+
 
 #### **Running PowerShell Scripts from PowerShell**
 
@@ -51,7 +68,8 @@ PS C:\learn-chefserver\centos7> cd packages
 PS C:\learn-chefserver\centos7\packages> .\fetch-chefclient.ps1
 PS C:\learn-chefserver\centos7\packages> .\fetch-chefdk.ps1
 PS C:\learn-chefserver\centos7\packages> .\fetch-chefserver.ps1
-PS C:\learn-chefserver\centos7\packages> .\fetch-packages.ps1 # optional
+PS C:\learn-chefserver\centos7\packages> # optional
+PS C:\learn-chefserver\centos7\packages> .\fetch-packages.ps1
 PS C:\learn-chefserver\centos7\packages> cd ..
 ```
 
@@ -63,7 +81,7 @@ PS C:\learn-chefserver\centos7\packages> cd ..
 5. Log into workstation `vagrant ssh`
 6. Create Cookbooks, e.g. `cd ~/chef-repo; chef generate cookbook cookbooks/mywebserver`
 
-***Note***: For the tunnel, you can only create one tunnel at a time, to be bounded to your host's 443 port, and you need administrative privileges.  Thus if you are running the CentOS and Ubuntu virtual guest systems at the same time.
+***Note***: For the tunnel, you can only create one tunnel at a time, to be bounded to your host's 443 port, and you need administrative privileges.  This is important if you are running the CentOS and Ubuntu virtual guest systems at the same time.
 
 ### **PART III: Logging In to Chef Server**
 
