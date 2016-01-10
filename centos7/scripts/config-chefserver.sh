@@ -62,7 +62,7 @@ ADMIN_EMAIL="vagrant@chefserver.dev"
 ADMIN_PASSWORD="vagrant"
 
 chef-server-ctl user-create ${ADMIN_USER_NAME} ${ADMIN_FIRST_NAME} ${ADMIN_LAST_NAME} ${ADMIN_EMAIL} ${ADMIN_PASSWORD} --filename ${ADMIN_USER_NAME}.pem
-cp -v ${ADMIN_USER_NAME}.pem /vagrant/chef-repo/.chef
+cp -v ${ADMIN_USER_NAME}.pem /vagrant/.chef
 
 ### ORGANITATION
 ORG_LONG_NAME="Vagrant Development Team"
@@ -70,4 +70,4 @@ ORG_SHORT_NAME="vagrantdev"
 ORG_ASSOC_USER="vagrant"
 
 sudo chef-server-ctl org-create ${ORG_SHORT_NAME} ${ORG_LONG_NAME} --association_user ${ORG_ASSOC_USER} -f ${ORG_SHORT_NAME}-validator.pem
-cp -v ${ORG_SHORT_NAME}-validator.pem /vagrant/chef-repo/.chef
+cp -v ${ORG_SHORT_NAME}-validator.pem /vagrant/.chef
