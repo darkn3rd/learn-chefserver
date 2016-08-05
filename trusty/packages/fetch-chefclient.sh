@@ -22,4 +22,4 @@ PACKAGE=$(echo ${JSON_DATA} | grep '"package"' | awk '{ print $2 }' | tr -d '"')
 eval PACKAGE_URL=$(echo "${JSON_DATA}" | grep '"url"' | awk '{ print $2 }' | tr -d '"')
 
 ##### Download Locally if file does not exist
-[ -e ${PACKAGE} ] || curl -o ${PACKAGE} ${PACKAGE_URL}
+[ -e ${PACKAGE} ] || curl -OL ${PACKAGE_URL}
