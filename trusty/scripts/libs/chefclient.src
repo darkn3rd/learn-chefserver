@@ -1,0 +1,12 @@
+#!/bin/sh
+
+. ${SCRIPTLIB}/common.src
+
+
+install_chefclient() {
+
+}
+
+config_chefclient() {
+
+}

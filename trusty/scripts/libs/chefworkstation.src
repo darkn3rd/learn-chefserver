@@ -1,0 +1,15 @@
+#!/bin/sh
+
+. ${SCRIPTLIB}/common.src
+
+install_chefdk() {
+
+}
+
+config_workstation() {
+
+}
+
+setup_chef_starter() {
+
+}
