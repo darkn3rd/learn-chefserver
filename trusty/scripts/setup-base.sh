@@ -3,8 +3,7 @@
 # AUTHOR: Joaquin Menchaca
 # CREATED: 2015-11-23
 # UPDATED:
-#   * 2016-04-24 support multiple data formats
-#   * 2016-06-13 built library to support any file
+#   * 2016-08-05 adopted by learn-chef project using host name
 #
 # PURPOSE: Configures `/etc/hosts` and global ssh configuration for each
 #  password-less system to system communication through ssh.
