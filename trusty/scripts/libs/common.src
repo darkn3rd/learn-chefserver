@@ -1,0 +1,43 @@
+#!/bin/sh
+
+error() {
+  echo "${1}" 1>&2
+  exit 1
+}
+
+fetch() {
+  PACKAGE=${1}
+  PKG_URL=${2}
+  ##### Verify $PKG_PATH Set
+  [ -z "${PKG_PATH}" ] && error "PKG_PATH not set. Aborting"
+  ##### Test for Curl tool
+  [ -z $(which curl) ] && error "ERROR: Curl not found. Install curl"
+  ##### Download Locally if file does not exist
+  [ -e "${PKG_PATH}/${PACKAGE}" ] || { cd ${PKG_PATH}; curl -OL ${PKG_URL} ;}
+}
+
+#######
+# install()
+#
+# description: installs package on ubuntu 14
+# usage: install $PACKAGE_NAME
+##########################################
+install() {
+  PACKAGE="${1}"
+  export DEBIAN_FRONTEND=noninteractive
+  if ! dpkg -l ${PACKAGE} > /dev/null 2>&1; then
+    apt-get -y -qq install ${PACKAGE} > /dev/null
+  fi
+}
+
+#######
+# verify()
+#
+# description: verifies command exist
+# usage: verify $COMMAND
+##########################################
+verify() {
+  command -v ${PACKAGE}  > /dev/null || \
+    { echo "ERROR: ${PACKAGE} not found. Install ${PACKAGE} or ensure it is in your path";
+      return 3; }
+}
