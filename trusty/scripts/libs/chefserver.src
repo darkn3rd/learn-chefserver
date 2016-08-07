@@ -94,16 +94,23 @@ install_chefserver() {
   setup_apparmor
 }
 
+#######
+# add_feature()
+#
+# description: installs and configures feature
+# usage:
+#   PKG_MANITEST='/path/to/manifest.csv' \
+#   PKG_PATH='/path/to/pkgs' add_feature
+##########################################
 add_feature() {
   ##### Verify Variables Set
   [ -z "${PKG_MANIFEST}" ] && error "PKG_MANIFEST not set. Aborting"
   [ -z "${PKG_PATH}" ] && error "PKG_PATH not set. Aborting"
 
   [ $# -ne 1 ] && \
-    error "USAGE: add_feature [feature_nae]" 2
+    error "USAGE: add_feature [feature_name]" 2
 
-  FEATURE=${1}
-  # check params
+  FEATURE=${1}  # the feature
 
   ##### Install Managment Console
   PACKAGE=$(grep "${FEATURE}" "${PKG_MANIFEST}" | cut -d, -f2)
@@ -158,14 +165,14 @@ create_user() {
 # usage:
 #   create_org \
 #     [key_location] \
-#     [long_name] \
 #     [short_name] \
+#     [long_name] \
 #     [associated_user] \
 ##########################################
 create_org() {
   KEY_LOCATION=${1:-'/vagrant/.chef'}
-  LONG_NAME=${2:-'Vagrant Development Team'}
-  SHORT_NAME=${3:-'vagrantdev'}
+  SHORT_NAME=${2:-'vagrantdev'}
+  LONG_NAME=${3:-'Vagrant Development Team'}
   ASSOC_USER=${4:-'vagrant'}
 
   # create organization
@@ -192,8 +199,8 @@ create_org() {
 #     [admin_last_name] \
 #     [admin_email] \
 #     [admin_passwd] \
-#     [org_long_name] \
-#     [org_short_name]
+#     [org_short_name] \
+#     [org_long_name]
 ##########################################
 config_chefserver() {
   ##### Verify Variables Set
