@@ -140,10 +140,11 @@ create_user() {
   EMAIL=${5:-'vagrant@chefserver.dev'}
   PASSWORD=${6:-'vagrant'}
 
-  # create user
-  chef-server-ctl user-create ${USER_NAME} \
-     ${FIRST_NAME} ${LAST_NAME} ${EMAIL} ${PASSWORD} \
-     --filename ${USER_NAME}.pem
+  # create user if user does not exist
+  chef-server-ctl user-list | grep -q ${USER_NAME} || \
+    chef-server-ctl user-create ${USER_NAME} \
+      ${FIRST_NAME} ${LAST_NAME} ${EMAIL} ${PASSWORD} \
+      --filename ${USER_NAME}.pem
 
   # store key so that other systems can access
   cp -v ${USER_NAME}.pem ${KEY_LOCATION}
@@ -168,9 +169,10 @@ create_org() {
   ASSOC_USER=${4:-'vagrant'}
 
   # create organization
-  chef-server-ctl org-create ${SHORT_NAME} ${LONG_NAME} \
-    --association_user ${ASSOC_USER} \
-    -f ${SHORT_NAME}-validator.pem
+  sudo chef-server-ctl org-list | grep -q ${SHORT_NAME} || \
+    chef-server-ctl org-create ${SHORT_NAME} ${LONG_NAME} \
+      --association_user ${ASSOC_USER} \
+      -f ${SHORT_NAME}-validator.pem
 
   # store key so that other systems can access
   cp -v ${SHORT_NAME}-validator.pem ${KEY_LOCATION}
@@ -204,8 +206,9 @@ config_chefserver() {
   ADMIN_LAST_NAME=${4:-'vagrant'}
   ADMIN_EMAIL=${5:-'vagrant@chefserver.dev'}
   ADMIN_PASSWD=${6:-'vagrant'}
-  ORG_LONG_NAME=${7:-'Vagrant Development Team'}
-  ORG_SHORT_NAME=${8:-'vagrantdev'}
+  ORG_SHORT_NAME=${7:-'vagrantdev'}
+  ORG_LONG_NAME=${8:-'Vagrant Development Team'}
+
 
   # INITIAL CONFIGURATION
   cat <<-CHEFSRVR_EOF > /etc/opscode/chef-server.rb
@@ -228,6 +231,6 @@ CHEFSRVR_EOF
   ##### Create User/Org
   create_user ${KEY_LOCATION} ${ADMIN_USER_NAME} ${ADMIN_FIRST_NAME} \
      ${ADMIN_LAST_NAME} ${ADMIN_EMAIL} ${ADMIN_PASSWD}
-  create_org ${KEY_LOCATION} ${ORG_LONG_NAME} ${ORG_SHORT_NAME} ${ADMIN_USER_NAME}
+  create_org ${KEY_LOCATION} ${ORG_SHORT_NAME} ${ORG_LONG_NAME} ${ADMIN_USER_NAME}
 
 }

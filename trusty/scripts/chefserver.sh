@@ -27,7 +27,7 @@ fetch_chefserver
 install_chefserver
 
 # Variables used to configure Chef Server
-KEY_LOCATION='vagrant/.chef'
+KEY_LOCATION='/vagrant/.chef'
 ADMIN_USER_NAME='vagrant'
 ADMIN_FIRST_NAME='vagrant'
 ADMIN_LAST_NAME='vagrant'
@@ -39,4 +39,4 @@ ORG_SHORT_NAME='vagrantdev'
 # Configure Chef Server with Packages, Admin User, and Organization
 config_chefserver ${KEY_LOCATION} ${ADMIN_USER_NAME} ${ADMIN_FIRST_NAME} \
    ${ADMIN_LAST_NAME} ${ADMIN_EMAIL} ${ADMIN_PASSWD} \
-   ${ORG_LONG_NAME} ${ORG_SHORT_NAME}
+   ${ORG_SHORT_NAME} ${ORG_LONG_NAME}
