@@ -35,3 +35,7 @@ fetch_chefdk
 install_chefdk
 config_user ${DEV_USER} ${CHEF_USER_CONFIG}
 setup_chef_starter ${DEV_USER} ${CHEF_USER_CONFIG} ${CHEF_STARTER}
+
+# Copy optional Test Script
+cp ${SCRIPTDIR}/test-chef.sh /home/${DEV_USER}/test_chef
+chmod +x /home/${DEV_USER}/test_chef
