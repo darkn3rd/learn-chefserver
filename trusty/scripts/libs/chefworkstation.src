@@ -47,8 +47,10 @@ config_user() {
   #### install certificate into chef's trusted certificate area
   su ${DEV_USER} -c 'knife ssl fetch'
   #### copy databag secret locally
-  su ${DEV_USER} -c "cp -vr ${DATABAG_SECRET_KEY} /home/${DEV_USER}/.chef/"
-  su ${DEV_USER} -c "chmod 400 /home/${DEV_USER}/.chef/encrypted_data_bag_secret"
+  LOCAL_SECRET_KEY="/home/${DEV_USER}/.chef/encrypted_data_bag_secret"
+  rm ${LOCAL_SECRET_KEY}
+  su ${DEV_USER} -c "cp -vr ${DATABAG_SECRET_KEY} ${LOCAL_SECRET_KEY}"
+  su ${DEV_USER} -c "chmod 400 ${LOCAL_SECRET_KEY}"
 }
 
 setup_chef_starter() {
