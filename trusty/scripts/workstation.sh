@@ -33,7 +33,7 @@ ${SCRIPTDIR}/setup-base.sh # Configure SSH and Hosts Files
 
 fetch_chefdk
 install_chefdk
-config_user ${DEV_USER} ${CHEF_USER_CONFIG}
+config_user ${DEV_USER} ${CHEF_USER_CONFIG} ${DATABAG_SECRET_KEY}
 setup_chef_starter ${DEV_USER} ${CHEF_USER_CONFIG} ${CHEF_STARTER}
 
 # Copy optional Test Script

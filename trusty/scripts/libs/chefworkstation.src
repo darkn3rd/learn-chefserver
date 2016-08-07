@@ -37,17 +37,28 @@ install_chefdk() {
 config_user() {
   DEV_USER=${1}
   CHEF_USER_CONFIG=${2}
+  DATABAG_SECRET_KEY=${3}
+
+  [ $# -lt 3 ] && \
+    error "USAGE: config_user [dev_user] [/path/to/user/config] [/path/to/data_bag_secret]" 2
 
   #### copy chef configuration directory and keys
   su ${DEV_USER} -c "cp -vr ${CHEF_USER_CONFIG} /home/${DEV_USER}/"
   #### install certificate into chef's trusted certificate area
   su ${DEV_USER} -c 'knife ssl fetch'
+  #### copy databag secret locally
+  su ${DEV_USER} -c "cp -vr ${DATABAG_SECRET_KEY} /home/${DEV_USER}/.chef/"
+  su ${DEV_USER} -c "chmod 400 /home/${DEV_USER}/.chef/encrypted_data_bag_secret"
 }
 
 setup_chef_starter() {
   DEV_USER=${1}
   CHEF_USER_CONFIG=${2}
   CHEF_STARTER=${3}
+
+  [ $# -lt 3 ] && \
+    error "USAGE: setup_chef_starter [dev_user] [/path/to/user/config] [/path/to/chef-starter]" 2
+
 
   #### copy chef-starter repository
   su ${DEV_USER} -c "cp -vr ${CHEF_STARTER} /home/${DEV_USER}/chef-repo/"
