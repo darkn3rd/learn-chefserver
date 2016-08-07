@@ -40,11 +40,7 @@ fetch_chefserver() {
   PACKAGE_TYPES="chef-server-core manage reporting"
 
   for TYPE in ${PACKAGE_TYPES}; do
-    PACKAGE=$(grep ${TYPE} ${PKG_MANIFEST} | cut -d, -f2)
-    eval PKG_URL=$(grep ${TYPE} ${PKG_MANIFEST} | cut -d, -f3)
-
-    ##### Download Packages
-    fetch $PACKAGE $PKG_URL
+    fetch_chef_pkg "$TYPE"
   done
 }
 
@@ -83,14 +79,11 @@ install_chefserver() {
   ##### Verify Variables Set
   [ -z "${PKG_MANIFEST}" ] && error "PKG_MANIFEST not set. Aborting"
   [ -z "${PKG_PATH}" ] && error "PKG_PATH not set. Aborting"
-  ##### Fetch Package Name
-  PACKAGE=$(grep 'chef-server-core' ${PKG_MANIFEST} | cut -d, -f2)
 
-  ##### Install Package if it is available and not installed already
-   [ -f "${PKG_PATH}/${PACKAGE}"  ] \
-      && dpkg -s 'chef-server-core' &> /dev/null \
-      || dpkg -i "${PKG_PATH}/${PACKAGE}"
+  ##### Install Chef Package
+  install_chef_pkg 'chef-server-core'
 
+  ##### Setup App Armor
   setup_apparmor
 }
 
@@ -115,6 +108,7 @@ add_feature() {
   ##### Install Managment Console
   PACKAGE=$(grep "${FEATURE}" "${PKG_MANIFEST}" | cut -d, -f2)
 
+  # Install from local pacakge, otherwise install from Internet
   if [ -f "${PKG_PATH}/${PACKAGE}" ]; then
     chef-server-ctl install opscode-${FEATURE} --path "${PKG_PATH}/${PACKAGE}"
   else

@@ -95,3 +95,60 @@ install_databag_secret() {
   [ -d /etc/chef ] || mkdir -p /etc/chef
   [ -e ${DATABAG_SECRET_KEY} ] && cp -v ${DATABAG_SECRET_KEY} /etc/chef/
 }
+
+#######
+# fetch_chef_pkg()
+#
+# description: downloads chef package
+# usage:
+#   PKG_MANIFEST='/path/to/manifest.csv' PKG_PATH='/path/to/packages/'
+#    fetch_chef_pkg "chef_deb_package_name"
+# notes:
+#    * package name match debian package name.
+#    * see packages.csv
+##########################################
+fetch_chef_pkg() {
+  DEB_PKG_NAME=${1}
+
+  [ $# -ne 1 ] && \
+    error "USAGE: install_chef_pkg [chef_package_name]" 2
+
+  ##### Verify Variables Set
+  [ -z "${PKG_MANIFEST}" ] && error "PKG_MANIFEST not set. Aborting"
+  [ -z "${PKG_PATH}" ] && error "PKG_PATH not set. Aborting"
+  ##### Fetch Package and Package URL variables
+  PACKAGE=$(grep "^${DEB_PKG_NAME}," ${PKG_MANIFEST} | cut -d, -f2)
+  eval PKG_URL=$(grep "^${DEB_PKG_NAME}," ${PKG_MANIFEST} | cut -d, -f3)
+
+  ##### Download Packages
+  fetch $PACKAGE $PKG_URL
+}
+
+#######
+# install_chef_pkg()
+#
+# description: install chef package
+# usage:
+#   PKG_MANIFEST='/path/to/manifest.csv' PKG_PATH='/path/to/packages/'
+#    install_chef_pkg "chef_deb_package_name"
+# notes:
+#    * package name match debian package name.
+#    * see packages.csv
+##########################################
+install_chef_pkg() {
+  DEB_PKG_NAME=${1}
+
+  [ $# -ne 1 ] && \
+    error "USAGE: install_chef_pkg [chef_package_name]" 2
+
+  ##### Verify Variables Set
+  [ -z "${PKG_MANIFEST}" ] && error "PKG_MANIFEST not set. Aborting"
+  [ -z "${PKG_PATH}" ] && error "PKG_PATH not set. Aborting"
+  ##### Fetch Package Name
+  PACKAGE=$(grep "^${DEB_PKG_NAME}," ${PKG_MANIFEST} | cut -d, -f2)
+
+  ##### Install Package if it is available and not installed already
+   [ -f "${PKG_PATH}/${PACKAGE}"  ] \
+      && dpkg -s "${DEB_PKG_NAME}" &> /dev/null \
+      || dpkg -i "${PKG_PATH}/${PACKAGE}"
+}

@@ -13,12 +13,9 @@ fetch_chef() {
   ##### Verify Variables Set
   [ -z "${PKG_MANIFEST}" ] && error "PKG_MANIFEST not set. Aborting"
   [ -z "${PKG_PATH}" ] && error "PKG_PATH not set. Aborting"
-  ##### Fetch Package and Package URL variables
-  PACKAGE=$(grep '^chef,' ${PKG_MANIFEST} | cut -d, -f2)
-  eval PKG_URL=$(grep '^chef,' ${PKG_MANIFEST} | cut -d, -f3)
 
-  ##### Download Packages
-  # fetch $PACKAGE $PKG_URL
+  ##### Fetch Chef Package
+  fetch_chef_pkg "chef"
 }
 
 #######
