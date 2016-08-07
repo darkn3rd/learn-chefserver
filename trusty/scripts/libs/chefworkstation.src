@@ -34,6 +34,14 @@ install_chefdk() {
   install_chef_pkg 'chefdk'
 }
 
+#######
+# config_user()
+#
+# description: register workstation with chef-server, grant it permission to
+#  apply runlists onto nodes, and utilize encrypted databags.
+# usage:
+#   config_user [user] [/path/to/.chef] [/path/to/encrypted_data_bag_secret]
+##########################################
 config_user() {
   DEV_USER=${1}
   CHEF_USER_CONFIG=${2}
@@ -53,6 +61,14 @@ config_user() {
   su ${DEV_USER} -c "chmod 400 ${LOCAL_SECRET_KEY}"
 }
 
+#######
+# config_user()
+#
+# description: move chef-starter (created from chefserver) into chef repo and
+#   register it to be able to run cookbooks on nodes.
+# usage:
+#   setup_chef_starter [user] [/path/to/.chef] [/path/to/encrypted_data_bag_secret]
+##########################################
 setup_chef_starter() {
   DEV_USER=${1}
   CHEF_USER_CONFIG=${2}

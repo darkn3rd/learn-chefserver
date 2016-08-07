@@ -1,6 +1,6 @@
 # Tested Platforms
 
-Manual Testing
+Manual Testing:
 
   * Host OS: Mac OS X 10.8.5, 10.10.5, 10.11.6
   * Guest OS:
@@ -12,3 +12,7 @@ Manual Testing
          * Management 1.21
       *  ChefDK 0.10
       *  Chef client 12.5.1
+
+## Notes
+
+Though these scripts were developed to be utilized on other platforms, they were only tested on Linux systems running in Vagrant/Virtualbox guests.
