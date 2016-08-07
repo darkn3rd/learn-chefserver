@@ -23,8 +23,6 @@ ${SCRIPTDIR}/setup-base.sh    # Configure SSH and Hosts Files
 fetch_chef
 install_chef            # Install Client
 
-
-
 ##### Install Existing Databag Secret
 KEY_PATH="/vagrant/config"
 DATABAG_SECRET_KEY="${KEY_PATH}/encrypted_data_bag_secret"

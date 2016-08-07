@@ -92,6 +92,6 @@ install_databag_secret() {
     error "USAGE: install_databag_secret [/path/to/secret]" 2
 
   #### Copy secret file if it exists
-  #mkdir -p /etc/chef
-  [ -e ${DATABAG_SECRET_KEY} ] && cp -v ${DATABAG_SECRET_KEY} /etc/chef
+  [ -d /etc/chef ] || mkdir -p /etc/chef
+  [ -e ${DATABAG_SECRET_KEY} ] && cp -v ${DATABAG_SECRET_KEY} /etc/chef/
 }
