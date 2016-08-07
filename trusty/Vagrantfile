@@ -44,8 +44,7 @@ Vagrant.configure("2") do |config|
           host.vm.provider("virtualbox") { |vbox| vbox.name = "ubuntu_trusty_#{hostname}_#{TIME}" }
       end
       # Provision
-      host.vm.provision "shell", path: "scripts/setup-base.sh"
-      #host.vm.provision "shell", path: "scripts/#{hostname}.sh"
+      host.vm.provision "shell", path: "scripts/#{hostname}.sh"
     end
   end
 end

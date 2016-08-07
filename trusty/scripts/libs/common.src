@@ -1,13 +1,23 @@
 #!/bin/sh
 
 error() {
-  echo "${1}" 1>&2
-  exit 1
+  echo "${1}" 1>&2  # stderr message
+  exit ${2:-"1"}
 }
 
+#######
+# fetch()
+#
+# description: fetch a package if it does not exist
+# usage: install $PACKAGE_NAME
+##########################################
 fetch() {
   PACKAGE=${1}
   PKG_URL=${2}
+
+  [ $# -lt 2 ] && \
+    error "USAGE: fetch [package_name] [package_url]" 2
+
   ##### Verify $PKG_PATH Set
   [ -z "${PKG_PATH}" ] && error "PKG_PATH not set. Aborting"
   ##### Test for Curl tool
@@ -19,13 +29,18 @@ fetch() {
 #######
 # install()
 #
-# description: installs package on ubuntu 14
+# description: Ubuntu Install Package
 # usage: install $PACKAGE_NAME
 ##########################################
 install() {
   PACKAGE="${1}"
+
+  [ $# -ne 1 ] && \
+    error "USAGE: install [package_name]" 2
+
+
   export DEBIAN_FRONTEND=noninteractive
-  if ! dpkg -l ${PACKAGE} > /dev/null 2>&1; then
+  if ! dpkg -l ${PACKAGE} &> /dev/null; then
     apt-get -y -qq install ${PACKAGE} > /dev/null
   fi
 }
@@ -37,7 +52,46 @@ install() {
 # usage: verify $COMMAND
 ##########################################
 verify() {
-  command -v ${PACKAGE}  > /dev/null || \
-    { echo "ERROR: ${PACKAGE} not found. Install ${PACKAGE} or ensure it is in your path";
-      return 3; }
+  command -v ${PACKAGE} &> /dev/null || \
+    error "ERROR: ${PACKAGE} not found. Install ${PACKAGE} or ensure it is in your path" 3
+}
+
+#######
+# gen_data_bag_secret()
+#
+# description: generates databag secret key
+# usage:
+#   gen_data_bag_secret "/path/to/key"
+##########################################
+gen_data_bag_secret() {
+  DATABAG_SECRET_KEY=${1}
+
+  echo $# ${1}
+
+  [ $# -ne 1 ] && \
+    error "USAGE: gen_data_bag_secret [/path/to/secret]" 2
+
+  ##### Test for OpenSSL
+  verify "openssl"
+
+  ##### Generate Secret Key
+  openssl rand -base64 512 | tr -d '\r\n' > "${DATABAG_SECRET_KEY}"
+}
+
+#######
+# install_databag_secret()
+#
+# description: installs databag secret key if it exists
+# usage:
+#   install_databag_secret "/path/to/key"
+##########################################
+install_databag_secret() {
+  DATABAG_SECRET_KEY=${1}
+
+  [ $# -ne 1 ] && \
+    error "USAGE: install_databag_secret [/path/to/secret]" 2
+
+  #### Copy secret file if it exists
+  #mkdir -p /etc/chef
+  [ -e ${DATABAG_SECRET_KEY} ] && cp -v ${DATABAG_SECRET_KEY} /etc/chef
 }

@@ -1,41 +1,94 @@
 #!/bin/sh
+# NAME: chefserver.src
+# AUTHOR: Joaquin Menchaca
+# CREATED: 2015-11-23
+# UPDATED:
+#   * 2016-08-06 - move core functionality into modularized script library
+#
+# PURPOSE: Library for configuring, installing Chef Server and installling
+#  reporting and management console, configuring administration account, and
+#  generating private keys
+# DEPENDENCIES:
+#  * Global Configuration (optional) - default.hsots, packages.csv
+# NOTES:
+#  * These functions need to run on the virtual guest system
+# FUNCTIONS HIERARCHY:
+#  * fetch_chefserver()
+#  * install_chefserver()
+#    * setup_apparmor()
+#    * remove_apparmor()
+#  * config_chefserver()
+#    * add_feature()
+#    * create_user()
+#    * create_org()
 
 . ${SCRIPTLIB}/common.src
 
+#######
+# fetch_chefserver()
+#
+# description: download packages for ubuntu 14.04 deb package
+# usage:
+#    PKG_MANITEST='/path/to/manifest.csv' PKG_PATH='/path/to/pkgs' fetch_chefdk
+##########################################
 fetch_chefserver() {
   ##### Verify Variables Set
   [ -z "${PKG_MANIFEST}" ] && error "PKG_MANIFEST not set. Aborting"
   [ -z "${PKG_PATH}" ] && error "PKG_PATH not set. Aborting"
-  ##### Fetch Package and Package URL variables
-  PACKAGE=$(grep 'server' ${PKG_MANIFEST} | cut -d, -f2)
-  eval PKG_URL=$(grep 'server' ${PKG_MANIFEST} | cut -d, -f3)
 
-  ##### Download Packages
-  fetch $PACKAGE $PKG_URL
+  ##### Fetch Package and Package URL variables
+  PACKAGE_TYPES="chef-server-core manage reporting"
+
+  for TYPE in ${PACKAGE_TYPES}; do
+    PACKAGE=$(grep ${TYPE} ${PKG_MANIFEST} | cut -d, -f2)
+    eval PKG_URL=$(grep ${TYPE} ${PKG_MANIFEST} | cut -d, -f3)
+
+    ##### Download Packages
+    fetch $PACKAGE $PKG_URL
+  done
 }
 
+#######
+# setup_apparmor()
+#
+# description: configures AppArmor
+##########################################
 setup_apparmor() {
   ##### SET APPARMOR TO COMPLAIN MODE
   apt-get install -y apparmor-utils
   sudo aa-complain /etc/apparmor.d/*
 }
 
+#######
+# remove_apparmor()
+#
+# description: removes AppArmor
+##########################################
 remove_apparmor() {
   ##### REMOVE APPARMOR
   invoke-rc.d apparmor kill
   update-rc.d -f apparmor remove
 }
 
+
+#######
+# install_chefserver()
+#
+# description: install downloaded package for ubuntu 14.04 deb package
+# usage:
+#   PKG_MANITEST='/path/to/manifest.csv' \
+#   PKG_PATH='/path/to/pkgs' install_chefserver
+##########################################
 install_chefserver() {
   ##### Verify Variables Set
   [ -z "${PKG_MANIFEST}" ] && error "PKG_MANIFEST not set. Aborting"
   [ -z "${PKG_PATH}" ] && error "PKG_PATH not set. Aborting"
   ##### Fetch Package Name
-  PACKAGE=$(grep 'server' ${PKG_MANIFEST} | cut -d, -f2)
+  PACKAGE=$(grep 'chef-server-core' ${PKG_MANIFEST} | cut -d, -f2)
 
   ##### Install Package if it is available and not installed already
    [ -f "${PKG_PATH}/${PACKAGE}"  ] \
-      && dpkg -s chef-server-core > /dev/null 2>&1 \
+      && dpkg -s 'chef-server-core' &> /dev/null \
       || dpkg -i "${PKG_PATH}/${PACKAGE}"
 
   setup_apparmor
@@ -45,6 +98,9 @@ add_feature() {
   ##### Verify Variables Set
   [ -z "${PKG_MANIFEST}" ] && error "PKG_MANIFEST not set. Aborting"
   [ -z "${PKG_PATH}" ] && error "PKG_PATH not set. Aborting"
+
+  [ $# -ne 1 ] && \
+    error "USAGE: add_feature [feature_nae]" 2
 
   FEATURE=${1}
   # check params
@@ -63,36 +119,93 @@ add_feature() {
 
 }
 
-# static function for now
-user_create() {
-  ##### ADMINISTRATION ACCOUNT
-  ADMIN_USER_NAME="vagrant"
-  ADMIN_FIRST_NAME="vagrant"
-  ADMIN_LAST_NAME="vagrant"
-  ADMIN_EMAIL="vagrant@chefserver.dev"
-  ADMIN_PASSWORD="vagrant"
+#######
+# create_user()
+#
+# description: creates user and associated PEM
+# usage:
+#   create_user \
+#     [key_location] \
+#     [user_name] \
+#     [first_name] \
+#     [last_name] \
+#     [email] \
+#     [passwd]
+##########################################
+create_user() {
+  KEY_LOCATION=${1:-'/vagrant/.chef'}
+  USER_NAME=${2:-'vagrant'}
+  FIRST_NAME=${3:-'vagrant'}
+  LAST_NAME=${4:-'vagrant'}
+  EMAIL=${5:-'vagrant@chefserver.dev'}
+  PASSWORD=${6:-'vagrant'}
 
-  chef-server-ctl user-create ${ADMIN_USER_NAME} ${ADMIN_FIRST_NAME} ${ADMIN_LAST_NAME} ${ADMIN_EMAIL} ${ADMIN_PASSWORD} --filename ${ADMIN_USER_NAME}.pem
-  cp -v ${ADMIN_USER_NAME}.pem /vagrant/.chef
+  # create user
+  chef-server-ctl user-create ${USER_NAME} \
+     ${FIRST_NAME} ${LAST_NAME} ${EMAIL} ${PASSWORD} \
+     --filename ${USER_NAME}.pem
+
+  # store key so that other systems can access
+  cp -v ${USER_NAME}.pem ${KEY_LOCATION}
 
 }
 
-# static function for now
-org_create() {
-  ##### ORGANITATION
-  ORG_LONG_NAME="Vagrant Development Team"
-  ORG_SHORT_NAME="vagrantdev"
-  ORG_ASSOC_USER="vagrant"
+#######
+# create_org()
+#
+# description: creates user and associated PEM
+# usage:
+#   create_org \
+#     [key_location] \
+#     [long_name] \
+#     [short_name] \
+#     [associated_user] \
+##########################################
+create_org() {
+  KEY_LOCATION=${1:-'/vagrant/.chef'}
+  LONG_NAME=${2:-'Vagrant Development Team'}
+  SHORT_NAME=${3:-'vagrantdev'}
+  ASSOC_USER=${4:-'vagrant'}
 
-  chef-server-ctl org-create ${ORG_SHORT_NAME} ${ORG_LONG_NAME} --association_user ${ORG_ASSOC_USER} -f ${ORG_SHORT_NAME}-validator.pem
-  cp -v ${ORG_SHORT_NAME}-validator.pem /vagrant/.chef
+  # create organization
+  chef-server-ctl org-create ${SHORT_NAME} ${LONG_NAME} \
+    --association_user ${ASSOC_USER} \
+    -f ${SHORT_NAME}-validator.pem
+
+  # store key so that other systems can access
+  cp -v ${SHORT_NAME}-validator.pem ${KEY_LOCATION}
 
 }
 
+#######
+# config_chefserver()
+#
+# description: creates user and associated PEM
+# usage:
+#   PKG_MANIFEST='/path/to/manifest.csv' PKG_PATH='/path/to/packages/ \
+#   config_chefserver \
+#     [key_location] \
+#     [admin_user_name] \
+#     [amdin_first_name] \
+#     [admin_last_name] \
+#     [admin_email] \
+#     [admin_passwd] \
+#     [org_long_name] \
+#     [org_short_name]
+##########################################
 config_chefserver() {
   ##### Verify Variables Set
   [ -z "${PKG_MANIFEST}" ] && error "PKG_MANIFEST not set. Aborting"
   [ -z "${PKG_PATH}" ] && error "PKG_PATH not set. Aborting"
+
+  KEY_LOCATION=${1:-'/vagrant/.chef'}
+  ADMIN_USER_NAME=${2:-'vagrant'}
+  ADMIN_FIRST_NAME=${3:-'vagrant'}
+  ADMIN_LAST_NAME=${4:-'vagrant'}
+  ADMIN_EMAIL=${5:-'vagrant@chefserver.dev'}
+  ADMIN_PASSWD=${6:-'vagrant'}
+  ORG_LONG_NAME=${7:-'Vagrant Development Team'}
+  ORG_SHORT_NAME=${8:-'vagrantdev'}
 
   # INITIAL CONFIGURATION
   cat <<-CHEFSRVR_EOF > /etc/opscode/chef-server.rb
@@ -113,7 +226,8 @@ CHEFSRVR_EOF
   add_feature reporting
 
   ##### Create User/Org
-  user_create
-  org_create
+  create_user ${KEY_LOCATION} ${ADMIN_USER_NAME} ${ADMIN_FIRST_NAME} \
+     ${ADMIN_LAST_NAME} ${ADMIN_EMAIL} ${ADMIN_PASSWD}
+  create_org ${KEY_LOCATION} ${ORG_LONG_NAME} ${ORG_SHORT_NAME} ${ADMIN_USER_NAME}
 
 }

@@ -2,14 +2,65 @@
 
 . ${SCRIPTLIB}/common.src
 
-install_chefdk() {
+#######
+# fetch_chefdk()
+#
+# description: download package for ubuntu 14.04 deb package
+# usage:
+#    PKG_MANITEST='/path/to/manifest.csv' PKG_PATH='/path/to/pkgs' fetch_chefdk
+##########################################
+fetch_chefdk() {
+  ##### Verify Variables Set
+  [ -z "${PKG_MANIFEST}" ] && error "PKG_MANIFEST not set. Aborting"
+  [ -z "${PKG_PATH}" ] && error "PKG_PATH not set. Aborting"
+  ##### Fetch Package and Package URL variables
+  PACKAGE=$(grep 'chefdk' ${PKG_MANIFEST} | cut -d, -f2)
+  eval PKG_URL=$(grep 'chefdk' ${PKG_MANIFEST} | cut -d, -f3)
 
+  ##### Download Packages
+  fetch $PACKAGE $PKG_URL
 }
 
-config_workstation() {
+#######
+# install_chefdk()
+#
+# description: install downloaded package for ubuntu 14.04 deb package
+# usage:
+#   PKG_MANITEST='/path/to/manifest.csv' \
+#   PKG_PATH='/path/to/pkgs' install_chefdk
+##########################################
+install_chefdk() {
+  ##### Verify Variables Set
+  [ -z "${PKG_MANIFEST}" ] && error "PKG_MANIFEST not set. Aborting"
+  [ -z "${PKG_PATH}" ] && error "PKG_PATH not set. Aborting"
+  ##### Fetch Package Name
+  PACKAGE=$(grep 'chefdk' ${PKG_MANIFEST} | cut -d, -f2)
 
+  ##### Install Package if it is available and not installed already
+   [ -f "${PKG_PATH}/${PACKAGE}"  ] \
+      && dpkg -s 'chefdk' &> /dev/null \
+      || dpkg -i "${PKG_PATH}/${PACKAGE}"
+}
+
+config_user() {
+  DEV_USER=${1}
+  CHEF_USER_CONFIG=${2}
+
+  #### copy chef configuration directory and keys
+  su ${DEV_USER} -c "cp -vr ${CHEF_USER_CONFIG} ~vagrant"
+  #### install certificate into chef's trusted certificate area
+  su ${DEV_USER} -c 'knife ssl fetch'
 }
 
 setup_chef_starter() {
+  DEV_USER=${1}
+  CHEF_USER_CONFIG=${2}
+  CHEF_STARTER=${3}
 
+  #### copy chef-starter repository
+  su ${DEV_USER} -c "cp -vr ${CHEF_STARTER} ~${DEV_USER}/chef-repo"
+  #### copy chef configuration directory and keys
+  su ${DEV_USER} -c "cp -v ${CHEF_USER_CONFIG}/*.pem ~${DEV_USER}/chef-repo/.chef"
+  #### install certificate into chef's trusted certificate area
+  su ${DEV_USER} -c "cd ~${DEV_USER}/chef-repo; knife ssl fetch"
 }

@@ -28,3 +28,4 @@ SCRIPTLIB="${SCRIPTDIR}/libs"
 ##### Setup /etc/ssh_config and /etc/hosts
 config_ssh ${CONFIGFILE}
 config_hosts ${CONFIGFILE}
+install_utilities

@@ -1,6 +1,6 @@
-server,chef-server-core_12.3.0-1_amd64.deb,https://packages.chef.io/stable/ubuntu/14.04/$PACKAGE,
-devkit,chefdk_0.10.0-1_amd64.deb,https://packages.chef.io/stable/ubuntu/12.04/$PACKAGE,
-client,chef_12.5.1-1_amd64.deb,https://packages.chef.io/stable/ubuntu/10.04/$PACKAGE,
+chef-server-core,chef-server-core_12.3.0-1_amd64.deb,https://packages.chef.io/stable/ubuntu/14.04/$PACKAGE,
+chefdk,chefdk_0.10.0-1_amd64.deb,https://packages.chef.io/stable/ubuntu/12.04/$PACKAGE,
+chef,chef_12.5.1-1_amd64.deb,https://packages.chef.io/stable/ubuntu/10.04/$PACKAGE,
 analytics,opscode-analytics_1.2.0-1_amd64.deb,https://packages.chef.io/stable/ubuntu/14.04/$PACKAGE,2d8308f9d2afb826b4aff93bcc26e9d84b50585a
 reporting,opscode-reporting_1.5.5-1_amd64.deb,https://packages.chef.io/stable/ubuntu/14.04/$PACKAGE,937b294ee55bc1ad903c9339c8f0bb91cd8bc2a6
 manage,opscode-manage_1.21.0-1_amd64.deb,https://packages.chef.io/stable/ubuntu/14.04/$PACKAGE,84582862ce47d5f6db1e1ed89021c4b8efbda847
