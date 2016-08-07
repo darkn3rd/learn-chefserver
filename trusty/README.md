@@ -12,14 +12,13 @@ These were tested only on a host running **OS X** (10.11.6, 10.10.5, 10.8.5), bu
 ### **PART I: Bring Up Vagrant Environment**
 
 1. Create Environment `vagrant up`
-* Explore Chef Server `https://192.168.51.3`
 * Log into workstation `vagrant ssh`
 * Create Cookbooks, e.g. `cd ~/chef-repo; chef generate cookbook cookbooks/mywebserver`
 
 ### **PART II: Logging In to Chef Server**
 
 1. In web browser: `https://192.168.51.3`.
-* You may have to confirm a security exception as the SSL certificate is self-signed.
+* Confirm a security exception for self-signed certificate.
 * Log on using username and password of `vagrant`
 
 ### **PART III: Run Sample Chef Recipe**

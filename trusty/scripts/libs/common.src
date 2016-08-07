@@ -1,8 +1,25 @@
 #!/bin/sh
 
+#######
+# error()
+#
+# description: exit program with error message to stderr
+# usage: error "message" error_code
+##########################################
 error() {
   echo "${1}" 1>&2  # stderr message
   exit ${2:-"1"}
+}
+
+#######
+# warn()
+#
+# description: print warrning message to stderr and return error code
+# usage: warn "message" warn_code
+##########################################
+warn() {
+  echo "${1}" 1>&2  # stderr message
+  return ${2:-"1"}
 }
 
 #######
@@ -53,13 +70,16 @@ install() {
 ##########################################
 verify() {
   command -v ${PACKAGE} &> /dev/null || \
-    error "ERROR: ${PACKAGE} not found. Install ${PACKAGE} or ensure it is in your path" 3
+    warn "ERROR: ${PACKAGE} not found. Install ${PACKAGE} or ensure it is in your path" 3
+  return $?
 }
 
 #######
 # gen_data_bag_secret()
 #
 # description: generates databag secret key
+# requirements:
+#   * openssl
 # usage:
 #   gen_data_bag_secret "/path/to/key"
 ##########################################
@@ -72,7 +92,7 @@ gen_data_bag_secret() {
     error "USAGE: gen_data_bag_secret [/path/to/secret]" 2
 
   ##### Test for OpenSSL
-  verify "openssl"
+  verify "openssl" || exit $?
 
   ##### Generate Secret Key
   openssl rand -base64 512 | tr -d '\r\n' > "${DATABAG_SECRET_KEY}"
