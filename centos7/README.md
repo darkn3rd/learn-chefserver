@@ -5,6 +5,8 @@
     November 15, 2015
 
 Welcome to Chef Server Demo.  Use the instructions below to bring up environment with a Chef Server, Chef development workstation, and a single node to configure and test Chef workflow.
+
+
 ## **Instructions**
 
 These fetch scripts have been tested on a host running **OS X 10.8.5** Mountain Lion, **OS X 10.10.5** Yosemite, **Fedora 20** Heisenbug, **Windows 7** (WinNT 6.1), and **Windows 10** (WinNT 6.4 in real life).

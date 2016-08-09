@@ -1,0 +1,193 @@
+#!/usr/bin/env bash
+# NAME: common.src
+# AUTHOR: Joaquin Menchaca
+# CREATED: 2016-08-06
+# PURPOSE: General library of generic functions
+#
+# NOTES:
+#   * These functions need to run on the virtual guest system
+#
+# FUNCTIONS LIST:
+#  General Purpose:
+#   * error()
+#   * warn()
+#   * fetch()
+#   * install()
+#   * verify()
+#  Chef Releated:
+#   * gen_data_bag_secret()
+#   * install_databag_secret()
+#   * fetch_chef_pkg()
+#   * install_chef_pkg()
+
+
+#######
+# error()
+#
+# description: exit program with error message to stderr
+# usage: error "message" error_code
+##########################################
+error() {
+  echo "${1}" 1>&2  # stderr message
+  exit ${2:-"1"}
+}
+
+#######
+# warn()
+#
+# description: print warrning message to stderr and return error code
+# usage: warn "message" warn_code
+##########################################
+warn() {
+  echo "${1}" 1>&2  # stderr message
+  return ${2:-"1"}
+}
+
+#######
+# fetch()
+#
+# description: fetch a package if it does not exist
+# usage: install $PACKAGE_NAME
+##########################################
+fetch() {
+  PACKAGE=${1}
+  PKG_URL=${2}
+
+  [ $# -lt 2 ] && \
+    error "USAGE: fetch [package_name] [package_url]" 2
+
+  ##### Verify $PKG_PATH Set
+  [ -z "${PKG_PATH}" ] && error "PKG_PATH not set. Aborting"
+  ##### Test for Curl tool
+  [ -z $(which curl) ] && error "ERROR: Curl not found. Install curl"
+  ##### Download Locally if file does not exist
+  [ -e "${PKG_PATH}/${PACKAGE}" ] || { cd ${PKG_PATH}; curl -OL ${PKG_URL} ;}
+}
+
+#######
+# install()
+#
+# description: Ubuntu Install Package
+# usage: install $PACKAGE_NAME
+##########################################
+install() {
+  PACKAGE="${1}"
+
+  [ $# -ne 1 ] && \
+    error "USAGE: install [package]" 2
+
+  if ! rpm -q ${PACKAGE} &> /dev/null; then
+    yum -y -q install ${PACKAGE} > /dev/null
+  fi
+}
+
+#######
+# verify()
+#
+# description: verifies command exist
+# usage: verify $COMMAND
+##########################################
+verify() {
+  command -v ${PACKAGE} &> /dev/null || \
+    warn "ERROR: ${PACKAGE} not found. Install ${PACKAGE} or ensure it is in your path" 3
+  return $?
+}
+
+#######
+# gen_data_bag_secret()
+#
+# description: generates databag secret key
+# requirements:
+#   * openssl
+# usage:
+#   gen_data_bag_secret "/path/to/key"
+##########################################
+gen_data_bag_secret() {
+  DATABAG_SECRET_KEY=${1}
+
+  echo $# ${1}
+
+  [ $# -ne 1 ] && \
+    error "USAGE: gen_data_bag_secret [/path/to/secret]" 2
+
+  ##### Test for OpenSSL
+  verify "openssl" || exit $?
+
+  ##### Generate Secret Key
+  openssl rand -base64 512 | tr -d '\r\n' > "${DATABAG_SECRET_KEY}"
+}
+
+#######
+# install_databag_secret()
+#
+# description: installs databag secret key if it exists
+# usage:
+#   install_databag_secret "/path/to/key"
+##########################################
+install_databag_secret() {
+  DATABAG_SECRET_KEY=${1}
+
+  [ $# -ne 1 ] && \
+    error "USAGE: install_databag_secret [/path/to/secret]" 2
+
+  #### Copy secret file if it exists
+  [ -d /etc/chef ] || mkdir -p /etc/chef
+  [ -e ${DATABAG_SECRET_KEY} ] && cp -v ${DATABAG_SECRET_KEY} /etc/chef/
+}
+
+#######
+# fetch_chef_pkg()
+#
+# description: downloads chef package
+# usage:
+#   PKG_MANIFEST='/path/to/manifest.csv' PKG_PATH='/path/to/packages/'
+#    fetch_chef_pkg "chef_deb_package_name"
+# notes:
+#    * package name match debian package name.
+#    * see packages.csv
+##########################################
+fetch_chef_pkg() {
+  DEB_PKG_NAME=${1}
+
+  [ $# -ne 1 ] && \
+    error "USAGE: install_chef_pkg [chef_package_name]" 2
+
+  ##### Verify Variables Set
+  [ -z "${PKG_MANIFEST}" ] && error "PKG_MANIFEST not set. Aborting"
+  [ -z "${PKG_PATH}" ] && error "PKG_PATH not set. Aborting"
+  ##### Fetch Package and Package URL variables
+  PACKAGE=$(grep "^${DEB_PKG_NAME}," ${PKG_MANIFEST} | cut -d, -f2)
+  eval PKG_URL=$(grep "^${DEB_PKG_NAME}," ${PKG_MANIFEST} | cut -d, -f3)
+
+  ##### Download Packages
+  fetch $PACKAGE $PKG_URL
+}
+
+#######
+# install_chef_pkg()
+#
+# description: install chef package
+# usage:
+#   PKG_MANIFEST='/path/to/manifest.csv' PKG_PATH='/path/to/packages/'
+#    install_chef_pkg "chef_deb_package_name"
+# notes:
+#    * package name match debian package name.
+#    * see packages.csv
+##########################################
+install_chef_pkg() {
+  DEB_PKG_NAME=${1}
+
+  [ $# -ne 1 ] && \
+    error "USAGE: install_chef_pkg [chef_package_name]" 2
+
+  ##### Verify Variables Set
+  [ -z "${PKG_MANIFEST}" ] && error "PKG_MANIFEST not set. Aborting"
+  [ -z "${PKG_PATH}" ] && error "PKG_PATH not set. Aborting"
+  ##### Fetch Package Name
+  PACKAGE=$(grep "^${DEB_PKG_NAME}," ${PKG_MANIFEST} | cut -d, -f2)
+
+  ##### Install Package if it is available and not installed already
+   [ -f "${PKG_PATH}/${PACKAGE}"  ] \
+      && rpm -q  "${DEB_PKG_NAME}" &> /dev/null \
+      || rpm -Uvh "${PKG_PATH}/${PACKAGE}"
+}

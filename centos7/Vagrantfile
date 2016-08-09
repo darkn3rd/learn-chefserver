@@ -15,63 +15,42 @@
 # NOTES:
 #  * VirtualBox systems will need to have GuestEditions installed so that
 #    `/vagrant` will be mounted in the guest operating system
+#  * Vagrant 1.8.5 is not compatible with CentOS (RHEL) 7 systems
+#    https://github.com/mitchellh/vagrant/issues/5186
 
-time = Time.now.strftime("%Y%m%d%H%M%S")
+CONFIGFILE_HOSTS=ENV['VAGRANT_CONFIG'] || './config/default.hosts'
+TIME = Time.now.strftime("%Y%m%d%H%M%S")
+PRIMARY_SYSTEM = "workstation" # designate default primary system
 
-begin
-   file = open(".config/global.json")
- rescue StandardError=>e
-   puts "Error: #{e}"
- else
-   json = file.read
-   ipaddr = JSON.parse(json)['ipaddr']
+@hosts = Hash.new  # create hash to configure systems
+# Read Default Hosts File:  'ipaddress hostname'
+File.readlines(CONFIGFILE_HOSTS).map(&:chomp).each do |line|
+  ipaddr, hostname = line.split(/\s+/)
+  @hosts[hostname] = ipaddr
 end
 
 Vagrant.configure("2") do |config|
-  # CHEF SERVER
-  config.vm.define "chefserver" do |chefserver|
-    chefserver.vm.box = "geerlingguy/centos7"
-    chefserver.vm.hostname = "chefserver"
-    chefserver.vm.network "private_network", ip: "#{ipaddr['chefserver']}"
+  @hosts.each do |hostname, ipaddr|
+    default = if hostname == PRIMARY_SYSTEM then true else false end
+    config.vm.define hostname, primary: default  do |host|
+      host.vm.box = "geerlingguy/centos7"
+      host.vm.hostname = "#{hostname}"
+      host.vm.network "private_network", ip: ipaddr
+      case hostname
+      when /chefserver/
+          host.vm.provider "virtualbox" do |vbox|
+            vbox.memory = 4096
+            vbox.cpus = 2
+            vbox.name = "centos_7_#{hostname}_#{TIME}"
+          end
+      else
+          host.vm.provider("virtualbox") { |vbox| vbox.name = "centos_7_#{hostname}_#{TIME}" }
+      end
 
-    chefserver.vm.provider "virtualbox" do |vbox|
-      vbox.memory = 4096
-      vbox.cpus = 2
-      vbox.name = "chefserver_centos7_#{time}"
-    end
+      host.vm.synced_folder ".", "/vagrant", disabled: false
 
-    chefserver.vm.provision "shell", path: "scripts/setup-all.sh"        # ssh convenience
-    chefserver.vm.provision "shell", path: "scripts/install-chefserver.sh" # install Chef Server
-    # Configure Initial Setup, Admin Account, and Organization
-    chefserver.vm.provision "shell", path: "scripts/config-chefserver.sh"
-  end
-
-  # WORKSTATION
-  config.vm.define "work", primary: true do |work|
-    work.vm.box = "geerlingguy/centos7"
-    work.vm.hostname = "work"
-    work.vm.network "private_network", ip: "#{ipaddr['work']}"
-
-    work.vm.provider("virtualbox") { |vbox| vbox.name = "work_centos7_#{time}" }
-
-    work.vm.provision "shell", path: "scripts/setup-all.sh"    # ssh convenience
-    work.vm.provision "shell", path: "scripts/setup-work.sh"   # packages
-    work.vm.provision "shell", path: "scripts/install-chefdk.sh" # install ChefDK
-    # Configure Workstation to Use Chef Server
-    work.vm.provision "shell", path: "scripts/config-workstation.sh"
-    work.vm.provision "shell", path: "scripts/chef-starter.sh"
-  end
-
-  # NODE TO CONFIGURE
-  config.vm.define "node" do |node|
-    node.vm.box = "geerlingguy/centos7"
-    node.vm.hostname = "node"
-    node.vm.network "private_network", ip: "#{ipaddr['node']}"
-
-    node.vm.provider("virtualbox") { |vbox| vbox.name = "node_centos7_#{time}" }
-
-    node.vm.provision "shell", path: "scripts/setup-all.sh"        # ssh convenience
-    node.vm.provision "shell", path: "scripts/install-chefclient.sh" # install chef client
-    node.vm.provision "shell", path: "scripts/config-node.sh"      # install optional key
+      # Provision Systems with Shell Scripts
+      host.vm.provision "shell", path: "scripts/#{hostname}.sh"
+     end
   end
 end

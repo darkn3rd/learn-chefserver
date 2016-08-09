@@ -1,0 +1,249 @@
+#!/bin/sh
+# NAME: chefserver.src
+# AUTHOR: Joaquin Menchaca
+# CREATED: 2015-11-23
+# UPDATED:
+#    * 2016-08-06 - move core functionality into modularized script library
+#
+# PURPOSE: Library for configuring, installing Chef Server and installling
+#  reporting and management console, configuring administration account, and
+#  generating private keys
+# DEPENDENCIES:
+#   * Global Configuration (optional) - default.hsots, packages.csv
+# NOTES:
+#   * These functions need to run on the virtual guest system
+#
+# FUNCTIONS HIERARCHY:
+#   * fetch_chefserver()
+#   * install_chefserver()
+#      * set_selinux_to_permissive()
+#      * disable_qpid()
+#   * config_chefserver()
+#      * add_feature()
+#      * create_user()
+#      * create_org()
+
+. ${SCRIPTLIB}/common.src
+
+#######
+# fetch_chefserver()
+#
+# description: download packages for ubuntu 14.04 deb package
+# usage:
+#    PKG_MANITEST='/path/to/manifest.csv' PKG_PATH='/path/to/pkgs'
+#     fetch_chefserver
+##########################################
+fetch_chefserver() {
+  ##### Verify Variables Set
+  [ -z "${PKG_MANIFEST}" ] && error "PKG_MANIFEST not set. Aborting"
+  [ -z "${PKG_PATH}" ] && error "PKG_PATH not set. Aborting"
+
+  ##### Fetch Package and Package URL variables
+  PACKAGE_TYPES="chef-server-core manage reporting"
+
+  for TYPE in ${PACKAGE_TYPES}; do
+    fetch_chef_pkg "$TYPE"
+  done
+}
+
+#######
+# set_selinux_to_permissive()
+#
+# description: Sets SELinux to Permissive mode
+# usage:
+#   set_selinux_to_permissive
+##########################################
+set_selinux_to_permissive() {
+  # Set SELinux to Permissive
+  [ "$(getenforce)" = "Permissive" ] || setenforce Permissive
+}
+
+#######
+# disable_qpid()
+#
+# description: Disables Apache QPid, an implmentation of
+#  AMQP (Adv Message Qeuing Protocol).
+# usage:
+#   disable_qpid
+##########################################
+disable_qpid() {
+  # Disable Qpid
+  if $(rpm -qa | grep -q qpid); then
+    service qpidd stop
+    chkconfig --del qpidd
+  fi
+}
+
+
+#######
+# install_chefserver()
+#
+# description: install downloaded package for ubuntu 14.04 deb package
+# usage:
+#   PKG_MANITEST='/path/to/manifest.csv' \
+#   PKG_PATH='/path/to/pkgs' install_chefserver
+##########################################
+install_chefserver() {
+  ##### Verify Variables Set
+  [ -z "${PKG_MANIFEST}" ] && error "PKG_MANIFEST not set. Aborting"
+  [ -z "${PKG_PATH}" ] && error "PKG_PATH not set. Aborting"
+
+  ##### Install Chef Package
+  install_chef_pkg 'chef-server-core'
+
+  ##### Set SELinux to Permissive
+  set_selinux_to_permissive
+
+  ##### Disable QPid
+  disable_qpid
+
+}
+
+#######
+# add_feature()
+#
+# description: installs and configures feature
+# usage:
+#   PKG_MANITEST='/path/to/manifest.csv' \
+#   PKG_PATH='/path/to/pkgs' add_feature
+##########################################
+add_feature() {
+  ##### Verify Variables Set
+  [ -z "${PKG_MANIFEST}" ] && error "PKG_MANIFEST not set. Aborting"
+  [ -z "${PKG_PATH}" ] && error "PKG_PATH not set. Aborting"
+
+  [ $# -ne 1 ] && \
+    error "USAGE: add_feature [feature_name]" 2
+
+  FEATURE=${1}  # the feature
+
+  ##### Install Managment Console
+  PACKAGE=$(grep "${FEATURE}" "${PKG_MANIFEST}" | cut -d, -f2)
+
+  # Install from local pacakge, otherwise install from Internet
+  if [ -f "${PKG_PATH}/${PACKAGE}" ]; then
+    chef-server-ctl install opscode-${FEATURE} --path "${PKG_PATH}/${PACKAGE}"
+  else
+    chef-server-ctl install opscode-${FEATURE}
+  fi
+
+  chef-server-ctl reconfigure
+  opscode-${FEATURE}-ctl reconfigure
+
+}
+
+#######
+# create_user()
+#
+# description: creates user and associated PEM
+# usage:
+#   create_user \
+#     [key_location] \
+#     [user_name] \
+#     [first_name] \
+#     [last_name] \
+#     [email] \
+#     [passwd]
+##########################################
+create_user() {
+  KEY_LOCATION=${1:-'/vagrant/.chef'}
+  USER_NAME=${2:-'vagrant'}
+  FIRST_NAME=${3:-'vagrant'}
+  LAST_NAME=${4:-'vagrant'}
+  EMAIL=${5:-'vagrant@chefserver.dev'}
+  PASSWORD=${6:-'vagrant'}
+
+  # create user if user does not exist
+  chef-server-ctl user-list | grep -q ${USER_NAME} || \
+    chef-server-ctl user-create ${USER_NAME} \
+      ${FIRST_NAME} ${LAST_NAME} ${EMAIL} ${PASSWORD} \
+      --filename ${USER_NAME}.pem
+
+  # store key so that other systems can access
+  cp -v ${USER_NAME}.pem ${KEY_LOCATION}
+
+}
+
+#######
+# create_org()
+#
+# description: creates user and associated PEM
+# usage:
+#   create_org \
+#     [key_location] \
+#     [short_name] \
+#     [long_name] \
+#     [associated_user] \
+##########################################
+create_org() {
+  KEY_LOCATION=${1:-'/vagrant/.chef'}
+  SHORT_NAME=${2:-'vagrantdev'}
+  LONG_NAME=${3:-'Vagrant Development Team'}
+  ASSOC_USER=${4:-'vagrant'}
+
+  # create organization
+  sudo chef-server-ctl org-list | grep -q ${SHORT_NAME} || \
+    chef-server-ctl org-create ${SHORT_NAME} ${LONG_NAME} \
+      --association_user ${ASSOC_USER} \
+      -f ${SHORT_NAME}-validator.pem
+
+  # store key so that other systems can access
+  cp -v ${SHORT_NAME}-validator.pem ${KEY_LOCATION}
+
+}
+
+#######
+# config_chefserver()
+#
+# description: creates user and associated PEM
+# usage:
+#   PKG_MANIFEST='/path/to/manifest.csv' PKG_PATH='/path/to/packages/ \
+#   config_chefserver \
+#     [key_location] \
+#     [admin_user_name] \
+#     [amdin_first_name] \
+#     [admin_last_name] \
+#     [admin_email] \
+#     [admin_passwd] \
+#     [org_short_name] \
+#     [org_long_name]
+##########################################
+config_chefserver() {
+  ##### Verify Variables Set
+  [ -z "${PKG_MANIFEST}" ] && error "PKG_MANIFEST not set. Aborting"
+  [ -z "${PKG_PATH}" ] && error "PKG_PATH not set. Aborting"
+
+  KEY_LOCATION=${1:-'/vagrant/.chef'}
+  ADMIN_USER_NAME=${2:-'vagrant'}
+  ADMIN_FIRST_NAME=${3:-'vagrant'}
+  ADMIN_LAST_NAME=${4:-'vagrant'}
+  ADMIN_EMAIL=${5:-'vagrant@chefserver.dev'}
+  ADMIN_PASSWD=${6:-'vagrant'}
+  ORG_SHORT_NAME=${7:-'vagrantdev'}
+  ORG_LONG_NAME=${8:-'Vagrant Development Team'}
+
+
+  # INITIAL CONFIGURATION
+  cat <<-CHEFSRVR_EOF > /etc/opscode/chef-server.rb
+  server_name = "chefserver"
+  api_fqdn server_name
+  bookshelf['vip'] = server_name
+  nginx['url'] = "https://#{server_name}"
+  nginx['server_name'] = server_name
+  nginx['ssl_certificate'] = "/var/opt/opscode/nginx/ca/#{server_name}.crt"
+  nginx['ssl_certificate_key'] = "/var/opt/opscode/nginx/ca/#{server_name}.key"
+CHEFSRVR_EOF
+
+  ##### Update
+  chef-server-ctl reconfigure
+
+  ##### Add Features
+  add_feature manage
+  add_feature reporting
+
+  ##### Create User/Org
+  create_user ${KEY_LOCATION} ${ADMIN_USER_NAME} ${ADMIN_FIRST_NAME} \
+     ${ADMIN_LAST_NAME} ${ADMIN_EMAIL} ${ADMIN_PASSWD}
+  create_org ${KEY_LOCATION} ${ORG_SHORT_NAME} ${ORG_LONG_NAME} ${ADMIN_USER_NAME}
+
+}
