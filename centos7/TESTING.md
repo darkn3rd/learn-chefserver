@@ -33,11 +33,11 @@ The [centos/7 vagrant image](https://seven.centos.org/2016/07/updated-centos-vag
 
 ## **Certified Works**
 
-|Host                        |Guest                            |Vagrant|Driver     |
-|----------------------------|---------------------------------|-------|-----------|
-|Fedora 20 *Heisenbug*       |CentOS 7 (`geerlingguy/centos7`) |1.7.4  |VBox 4.3.34|
-|MacOS X 10.11.6             |CentOS 7 (`geerlingguy/centos7`) |1.8.4  |VBox 5.0.26|
-|MacOS X 10.8.5              |CentOS 7 (`geerlingguy/centos7`) |1.7.4  |VBox 4.3.20|
-|MacOS X 10.10.5             |CentOS 7 (`geerlingguy/centos7`) |1.7.4  |VBox 5.0.10|
-|Windows 7 (WinNT 6.1)       |CentOS 7 (`geerlingguy/centos7`) |1.7.4  |VBox 5.0.10|
-|Windows 10 Home (WinNT 6.4) |CentOS 7 (`geerlingguy/centos7`) |1.7.4  |VBox 5.0.10|
+|Host                        |Guest                                  |Vagrant|Driver     |
+|----------------------------|---------------------------------------|-------|-----------|
+|Fedora 20 *Heisenbug*       |CentOS 7 (`geerlingguy/centos7`)       |1.7.4  |VBox 4.3.34|
+|MacOS X 10.11.6             |CentOS 7 (`geerlingguy/centos7` 1.1.3) |1.8.4  |VBox 5.0.26|
+|MacOS X 10.8.5              |CentOS 7 (`geerlingguy/centos7`)       |1.7.4  |VBox 4.3.20|
+|MacOS X 10.10.5             |CentOS 7 (`geerlingguy/centos7`)       |1.7.4  |VBox 5.0.10|
+|Windows 7 (WinNT 6.1)       |CentOS 7 (`geerlingguy/centos7`)       |1.7.4  |VBox 5.0.10|
+|Windows 10 Home (WinNT 6.4) |CentOS 7 (`geerlingguy/centos7`)       |1.7.4  |VBox 5.0.10|
