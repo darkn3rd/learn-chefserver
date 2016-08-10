@@ -175,19 +175,30 @@ fetch_chef_pkg() {
 #    * see packages.csv
 ##########################################
 install_chef_pkg() {
-  DEB_PKG_NAME=${1}
+  PKG_NAME=${1}
 
   [ $# -ne 1 ] && \
     error "USAGE: install_chef_pkg [chef_package_name]" 2
+
+  OS_FAMILY=$(grep ID_LIKE /etc/os-release | grep -oP '[a-z]*' | head -1)
+  if [ "${OS_FAMILY}" = "rhel" ]; then
+    SEARCH="rpm -q"
+    INSTALL="rpm -Uvh"
+  elif [ "${OS_FAMILY}" = "debian" ]; then
+    SEARCH="dpkg -s"
+    INSTALL="dpkg -i"
+  else
+    error "ERROR: OS Family not supported."
+  fi
 
   ##### Verify Variables Set
   [ -z "${PKG_MANIFEST}" ] && error "PKG_MANIFEST not set. Aborting"
   [ -z "${PKG_PATH}" ] && error "PKG_PATH not set. Aborting"
   ##### Fetch Package Name
-  PACKAGE=$(grep "^${DEB_PKG_NAME}," ${PKG_MANIFEST} | cut -d, -f2)
+  PACKAGE=$(grep "^${PKG_NAME}," ${PKG_MANIFEST} | cut -d, -f2)
 
   ##### Install Package if it is available and not installed already
    [ -f "${PKG_PATH}/${PACKAGE}"  ] \
-      && dpkg -s "${DEB_PKG_NAME}" &> /dev/null \
-      || dpkg -i "${PKG_PATH}/${PACKAGE}"
+      && ${SEARCH} "${PKG_NAME}" &> /dev/null \
+      || ${INSTALL} "${PKG_PATH}/${PACKAGE}" > /dev/null
 }

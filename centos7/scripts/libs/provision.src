@@ -128,10 +128,10 @@ config_hosts () {
 # description: install vim + other utilities, and configure vim
 ##########################################
 install_utilities() {
-  OS_FAMILY=$(grep ID_LIKE /etc/os-release | grep -oP '[a-z]*(?= )')
-  if [ OS_FAMILY = "rhel" ]; then
+  OS_FAMILY=$(grep ID_LIKE /etc/os-release | grep -oP '[a-z]*' | head -1)
+  if [ ${OS_FAMILY} = "rhel" ]; then
     yum install -y -q tree curl unzip vim
-  elif [ OS_FAMILY = "debian" ]; then
+  elif [ ${OS_FAMILY} = "debian" ]; then
     apt-get -y -qq install tree curl unzip vim
   else
     error "ERROR: OS Family not supported."
