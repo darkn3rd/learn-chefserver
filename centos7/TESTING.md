@@ -41,3 +41,21 @@ The [centos/7 vagrant image](https://seven.centos.org/2016/07/updated-centos-vag
 |MacOS X 10.10.5             |CentOS 7 (`geerlingguy/centos7`)       |1.7.4  |VBox 5.0.10|
 |Windows 7 (WinNT 6.1)       |CentOS 7 (`geerlingguy/centos7`)       |1.7.4  |VBox 5.0.10|
 |Windows 10 Home (WinNT 6.4) |CentOS 7 (`geerlingguy/centos7`)       |1.7.4  |VBox 5.0.10|
+
+
+## **Test Platform**
+
+Host:
+  * MacBookPro 11,5 (2.5GHz Intel Core i7, 16 GB RAM)
+  * Mac OS X 10.11.6, Vagrant 1.8.4, VirtualBox 5.0.26
+Guest Timings:
+  * CentOS 7 (packages downloaded previously)
+      * `vagrant up --no-provision`: 1m37.343s
+      * `vagrant provision chefserver`: 6m34.131s
+      * `vagrant provision workstation`: 0m19.836s
+      * `vagrant provision node`: 0m9.447s
+  * Ubuntu 14.04 Trusty Tahr (packages downloaded previously)
+      * `vagrant up --no-provision`: 3m5.883s
+      * `vagrant provision chefserver`: 5m45.639s
+      * `vagrant provision workstation`: 0m44.461s
+      * `vagrant provision node`: 0m41.569s

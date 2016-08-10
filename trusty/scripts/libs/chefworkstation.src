@@ -74,7 +74,7 @@ config_user() {
   su ${DEV_USER} -c 'knife ssl fetch'
   #### copy databag secret locally
   LOCAL_SECRET_KEY="/home/${DEV_USER}/.chef/encrypted_data_bag_secret"
-  rm ${LOCAL_SECRET_KEY}
+  [ -f ${LOCAL_SECRET_KEY} ] && rm ${LOCAL_SECRET_KEY}
   su ${DEV_USER} -c "cp -vr ${DATABAG_SECRET_KEY} ${LOCAL_SECRET_KEY}"
   su ${DEV_USER} -c "chmod 400 ${LOCAL_SECRET_KEY}"
 }
