@@ -23,7 +23,7 @@
 
 
 **NOTES**
-* _Warning: Authentication failure. Retrying... " after packaging box_ ([Vagrant #5186]((https://github.com/mitchellh/vagrant/issues/5186))
+* _Warning: Authentication failure. Retrying... " after packaging box_ ([Vagrant #5186](https://github.com/mitchellh/vagrant/issues/5186))
   * Vagrant 1.8.5 + Cent OS 7
 * _VirtualBox Guest Additions in Vagrant image_ ([CentOS/sig-cloud-instance-build #27](https://github.com/CentOS/sig-cloud-instance-build/issues/27))
   * Vagrant 1.8.4 + Cent OS 7 (`centos/7`)
