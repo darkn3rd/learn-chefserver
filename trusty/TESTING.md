@@ -31,13 +31,11 @@ Host:
   * MacBookPro 11,5 (2.5GHz Intel Core i7, 16 GB RAM)
   * Mac OS X 10.11.6, Vagrant 1.8.4, VirtualBox 5.0.26
 Guest Timings:
-  * CentOS 7 (packages downloaded previously)
+  * Ubuntu 14.04 Trusty Tahr (packages downloaded previously)
       * `vagrant up --no-provision`: 1m37.343s
       * `vagrant provision chefserver`: 6m34.131s
       * `vagrant provision workstation`: 0m19.836s
       * `vagrant provision node`: 0m9.447s
-  * Ubuntu 14.04 Trusty Tahr (packages downloaded previously)
-      * `vagrant up --no-provision`: 3m5.883s
-      * `vagrant provision chefserver`: 5m45.639s
-      * `vagrant provision workstation`: 0m44.461s
-      * `vagrant provision node`: 0m41.569s
+      * `test_chef`: 0m9.188s
+  * Ubuntu 14.04 Trusty Tahr
+      * `vagrant up`: 14m9.589s
