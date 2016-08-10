@@ -1,4 +1,17 @@
-#!/bin/sh
+#!/usr/bin/env bash
+# NAME: node.sh
+# AUTHOR: Joaquin Menchaca
+# CREATED: 2015-11-24
+# UPDATED:
+#   * 2016-08-06 - hostname based script, modularized
+#
+# PURPOSE: Fetch/Install functions for Chef client
+# NOTES:
+#  * This script will be run on the guest operating system
+#
+# FUNCTIONS LIST:
+#   * fetch_chef()
+#   * install_chef()
 
 . ${SCRIPTLIB}/common.src
 

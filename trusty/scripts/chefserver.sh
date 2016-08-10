@@ -12,13 +12,12 @@
 # NOTES:
 #  * This script will be run on the guest operating system
 
-# Configure SSH and Hosts Files
-./setup-base.sh
-
 PKG_PATH="/vagrant/packages"
 PKG_MANIFEST="/vagrant/config/packages.csv"
 SCRIPTDIR="/vagrant/scripts"
 SCRIPTLIB="${SCRIPTDIR}/libs"
+
+${SCRIPTDIR}/setup-base.sh # Configure SSH and Hosts Files
 
 . ${SCRIPTLIB}/chefserver.src
 

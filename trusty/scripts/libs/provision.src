@@ -1,5 +1,23 @@
-#!/bin/sh
+#!/usr/bin/env bash
+# NAME: common.src
+# AUTHOR: Joaquin Menchaca
+# CREATED: 2016-08-06
+# PURPOSE: Library for configuring ssh config and hosts file for vagrant systems
+#
+# NOTES:
+#   * These functions need to run on the virtual guest system
+#
+# FUNCTIONS LIST:
+#  SSH & Hosts Configuration:
+#   * get_hostnames()
+#   * get_ipaddress()
+#   * config_ssh()
+#   * config_hosts()
+#   * install_utilities()
+#  VIM and other Tools:
+#   * install_utilities()
 
+. ${SCRIPTLIB}/common.src
 
 #######
 # get_hostnames()
@@ -104,9 +122,20 @@ config_hosts () {
   done
 }
 
-
+#######
+# install_utilities()
+#
+# description: install vim + other utilities, and configure vim
+##########################################
 install_utilities() {
-  apt-get -y -qq install tree curl unzip vim
+  OS_FAMILY=$(grep ID_LIKE /etc/os-release | grep -oP '[a-z]*(?= )')
+  if [ OS_FAMILY = "rhel" ]; then
+    yum install -y -q tree curl unzip vim
+  elif [ OS_FAMILY = "debian" ]; then
+    apt-get -y -qq install tree curl unzip vim
+  else
+    error "ERROR: OS Family not supported."
+  fi
 
   # Enable Color Syntax Highlighting
   cat <<-VIMRC_EOF > /home/vagrant/.vimrc

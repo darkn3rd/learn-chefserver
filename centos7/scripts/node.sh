@@ -6,8 +6,6 @@
 #   * 2016-08-06 - hostname based script, modularized
 #
 # PURPOSE: Configures Chef Node with opetioanl secret key
-# DEPENDENCIES:
-#  * Chef Client Previously Installed
 # NOTES:
 #  * This script will be run on the guest operating system
 

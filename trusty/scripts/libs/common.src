@@ -1,4 +1,24 @@
-#!/bin/sh
+#!/usr/bin/env bash
+# NAME: common.src
+# AUTHOR: Joaquin Menchaca
+# CREATED: 2016-08-06
+# PURPOSE: General library of generic functions
+#
+# NOTES:
+#   * These functions need to run on the virtual guest system
+#
+# FUNCTIONS LIST:
+#  General Purpose:
+#   * error()
+#   * warn()
+#   * fetch()
+#   * install()
+#   * verify()
+#  Chef Releated:
+#   * gen_data_bag_secret()
+#   * install_databag_secret()
+#   * fetch_chef_pkg()
+#   * install_chef_pkg()
 
 #######
 # error()
@@ -54,7 +74,6 @@ install() {
 
   [ $# -ne 1 ] && \
     error "USAGE: install [package_name]" 2
-
 
   export DEBIAN_FRONTEND=noninteractive
   if ! dpkg -l ${PACKAGE} &> /dev/null; then

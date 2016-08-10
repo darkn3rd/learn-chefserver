@@ -9,7 +9,6 @@
 #  the chef server, as well as SSL certificate from the Chef Server.
 # DEPENDENCIES:
 #  * Provisioned Chef Server
-#  * ChefDK previously installed
 # NOTES:
 #  * This script will be run on the guest operating system
 

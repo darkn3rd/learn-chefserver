@@ -1,0 +1,6 @@
+chef-server-core,chef-server-core-12.3.0-1.el7.x86_64.rpm,https://packages.chef.io/stable/el/7/$PACKAGE,
+chefdk,chefdk-0.10.0-1.el7.x86_64.rpm,https://packages.chef.io/stable/el/7/$PACKAGE,
+chef,chef-12.5.1-1.el7.x86_64.rpm,https://packages.chef.io/stable/el/7/$PACKAGE,
+analytics,opscode-analytics-1.2.0-1.el7.x86_64.rpm,https://packages.chef.io/stable/el/7/$PACKAGE,5a40c03be7ab1f68a10e7bd106b60c71931ab38b
+reporting,opscode-reporting-1.5.5-1.el7.x86_64.rpm,https://packages.chef.io/stable/el/7/$PACKAGE,eacc2d9af5af660eae072ffe0cc342412d6d74b8
+manage,opscode-manage-1.21.0-1.el7.x86_64.rpm,https://packages.chef.io/stable/el/7/$PACKAGE,1b12e6c3d52b5809fa9d1507a4b3f40a26c875dd

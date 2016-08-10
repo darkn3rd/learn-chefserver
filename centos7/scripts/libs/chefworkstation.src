@@ -1,4 +1,22 @@
 #!/usr/bin/env bash
+# NAME: chefworkstation.src
+# AUTHOR: Joaquin Menchaca
+# CREATED: 2015-11-23
+# UPDATED:
+#   * 2016-08-06 - hostname based script, modularized
+#
+# PURPOSE: Copies chef repository, including private keys needed for access to
+#  the chef server, as well as SSL certificate from the Chef Server.
+# DEPENDENCIES:
+#  * Provisioned Chef Server
+# NOTES:
+#  * This script will be run on the guest operating system
+#
+# FUNCTIONS LIST:
+#   * fetch_chefdk()
+#   * install_chefdk()
+#   * config_user()
+#   * setup_chef_starter()
 
 . ${SCRIPTLIB}/common.src
 
