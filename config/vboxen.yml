@@ -1,0 +1,3 @@
+---
+  trusty: "ubuntu/trusty64"
+  centos7: "geerlingguy/centos7"
