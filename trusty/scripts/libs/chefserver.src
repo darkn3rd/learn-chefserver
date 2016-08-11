@@ -110,7 +110,7 @@ add_feature() {
 
   # Install from local pacakge, otherwise install from Internet
   if [ -f "${PKG_PATH}/${PACKAGE}" ]; then
-    chef-server-ctl install opscode-${FEATURE} --path "${PKG_PATH}/${PACKAGE}"
+    chef-server-ctl install opscode-${FEATURE} --path "${PKG_PATH}"
   else
     chef-server-ctl install opscode-${FEATURE}
   fi
@@ -145,11 +145,7 @@ create_user() {
   chef-server-ctl user-list | grep -q ${USER_NAME} || \
     chef-server-ctl user-create ${USER_NAME} \
       ${FIRST_NAME} ${LAST_NAME} ${EMAIL} ${PASSWORD} \
-      --filename ${USER_NAME}.pem
-
-  # store key so that other systems can access
-  cp -v ${USER_NAME}.pem ${KEY_LOCATION}
-
+      --filename ${KEY_LOCATION}/${USER_NAME}.pem
 }
 
 #######
@@ -173,11 +169,7 @@ create_org() {
   sudo chef-server-ctl org-list | grep -q ${SHORT_NAME} || \
     chef-server-ctl org-create ${SHORT_NAME} ${LONG_NAME} \
       --association_user ${ASSOC_USER} \
-      -f ${SHORT_NAME}-validator.pem
-
-  # store key so that other systems can access
-  cp -v ${SHORT_NAME}-validator.pem ${KEY_LOCATION}
-
+      -f ${KEY_LOCATION}/${SHORT_NAME}-validator.pem
 }
 
 #######
