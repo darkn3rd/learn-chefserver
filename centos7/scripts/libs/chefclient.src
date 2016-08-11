@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+# NAME: node.sh
+# AUTHOR: Joaquin Menchaca
+# CREATED: 2015-11-24
+# UPDATED:
+#   * 2016-08-06 - hostname based script, modularized
+#
+# PURPOSE: Fetch/Install functions for Chef client
+# NOTES:
+#  * This script will be run on the guest operating system
+#
+# FUNCTIONS LIST:
+#   * fetch_chef()
+#   * install_chef()
+
+. ${SCRIPTLIB}/common.src
+
+#######
+# fetch_client()
+#
+# description: download package
+# usage:
+#    PKG_MANITEST='/path/to/manifest.csv' PKG_PATH='/path/to/pkgs' fetch_client
+##########################################
+fetch_chef() {
+  ##### Verify Variables Set
+  [ -z "${PKG_MANIFEST}" ] && error "PKG_MANIFEST not set. Aborting"
+  [ -z "${PKG_PATH}" ] && error "PKG_PATH not set. Aborting"
+
+  ##### Fetch Chef Package
+  fetch_chef_pkg "chef"
+}
+
+#######
+# install_chefclient()
+#
+# description: install downloaded package
+# usage:
+#   PKG_MANITEST='/path/to/manifest.csv' \
+#   PKG_PATH='/path/to/pkgs' install_chefclient
+##########################################
+install_chef() {
+  ##### Verify Variables Set
+  [ -z "${PKG_MANIFEST}" ] && error "PKG_MANIFEST not set. Aborting"
+  [ -z "${PKG_PATH}" ] && error "PKG_PATH not set. Aborting"
+
+  ##### Install Chef Package
+  install_chef_pkg 'chef'
+}
